@@ -1,0 +1,59 @@
+<!-- Student Home: report action, status summary, recent reports, latest updates, safety and map. -->
+<template data-component="StudentHomeView" data-from="./StudentHome"
+          data-props="firstName stats recent updates mine openReport tutorial openTutorial closeTutorial"
+          data-imports="NotificationList:../shared/NotificationsPage StudentTutorial:./StudentHome">
+  <div class="student-home">
+    <PageHeader title="Hi, {{ firstName }}" description="Report a campus problem or check on the ones you sent.">
+      <template data-slot="actions">
+        <Link to="/student/report" class="btn-primary student-home__report"><Icon.CirclePlus :size="17" aria-hidden />Report an issue</Link>
+        <button type="button" class="btn-secondary student-home__tour" @click="openTutorial"><Icon.CirclePlay :size="17" aria-hidden />How it works</button>
+      </template>
+    </PageHeader>
+
+    <StatStrip :items="stats" />
+
+    <div class="student-home__layout">
+      <div class="student-home__main">
+        <section class="panel" aria-labelledby="recent-reports">
+          <div class="panel-header">
+            <h2 id="recent-reports" class="panel-title">Recent reports</h2>
+            <Link to="/student/reports" class="link student-home__more">View all<Icon.ArrowRight :size="14" aria-hidden /></Link>
+          </div>
+          <ul data-if="recent.length" class="student-home__list">
+            <li data-for="r in recent" :key="r.id"><ReportCard :report="r" to="/student/reports/{{ r.id }}" showFlags /></li>
+          </ul>
+          <EmptyState data-else :icon="Icon.ClipboardList" title="No reports yet" message="Reports you send will show up here so you can follow the repair." />
+        </section>
+
+        <section class="panel" aria-labelledby="latest-updates">
+          <div class="panel-header">
+            <h2 id="latest-updates" class="panel-title">Latest updates</h2>
+            <Link to="/student/notifications" class="link student-home__more">All alerts<Icon.ArrowRight :size="14" aria-hidden /></Link>
+          </div>
+          <NotificationList :items="updates" compact />
+        </section>
+      </div>
+
+      <aside class="student-home__side" aria-label="More information">
+        <section class="panel student-home__safety" aria-labelledby="safety">
+          <h2 id="safety" class="student-home__safety-title">
+            <Icon.ShieldAlert :size="17" class="student-home__safety-icon" aria-hidden />Safety and emergencies
+          </h2>
+          <p class="student-home__safety-text">
+            Keep away from exposed wiring, broken glass, and flooded areas. CSU-One is for repairs. For fire, injuries, or immediate danger, call <a href="tel:911" class="link">911</a> and alert Campus Security.
+          </p>
+        </section>
+
+        <section class="panel" aria-labelledby="map-preview">
+          <div class="panel-header"><h2 id="map-preview" class="panel-title">Your reports on the map</h2></div>
+          <div class="student-home__map">
+            <CampusMap label="Map of your reports at CSU Carig" :reports="mine" :onViewReport="openReport" className="student-home__map-canvas" />
+            <MapLegend />
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <StudentTutorial data-if="tutorial" :onClose="closeTutorial" />
+  </div>
+</template>

@@ -1,0 +1,78 @@
+/* Report an Issue */
+.report-issue { @apply mx-auto max-w-3xl space-y-5; }
+
+/* Step progress */
+.report-issue__progress { @apply grid grid-cols-4 gap-2; }
+.report-issue__step { @apply w-full rounded-sm text-left; }
+.report-issue__step-bar { @apply block h-1 rounded-full bg-slate-200; }
+.report-issue__step.is-current .report-issue__step-bar,
+.report-issue__step.is-done .report-issue__step-bar { @apply bg-brand-700; }
+.report-issue__step-label { @apply mt-2 flex items-center gap-1 text-xs font-medium text-slate-500; }
+.report-issue__step.is-current .report-issue__step-label { @apply text-brand-700; }
+.report-issue__step.is-done .report-issue__step-label { @apply text-slate-700; }
+.report-issue__step-number { @apply hidden min-[400px]:inline; }
+.report-issue__step-count { @apply mt-0.5 text-xs text-slate-500; }
+
+.report-issue__body { @apply space-y-5 p-4 sm:p-5; }
+.report-issue__required { @apply ml-0.5 text-rose-700; }
+
+/* Category and priority choices */
+.report-issue__categories { @apply grid grid-cols-1 gap-2 min-[400px]:grid-cols-2 sm:grid-cols-3; }
+.report-issue__priorities { @apply grid gap-2 sm:grid-cols-3; }
+.report-issue__choice { @apply flex min-h-14 cursor-pointer items-start gap-2.5 rounded-lg border bg-white p-3 transition hover:border-slate-300 hover:bg-slate-50 focus-within:ring-2 focus-within:ring-brand-600 focus-within:ring-offset-2; }
+.report-issue__choice.is-selected { @apply border-brand-700 bg-brand-50 hover:border-brand-700 hover:bg-brand-50; }
+.report-issue__choice.is-invalid { @apply border-rose-300; }
+.report-issue__choice--priority { @apply min-h-0; }
+.report-issue__choice-icon { @apply mt-0.5 shrink-0 text-slate-500; }
+.report-issue__choice.is-selected .report-issue__choice-icon { @apply text-brand-700; }
+.report-issue__choice-text { @apply min-w-0; }
+.report-issue__choice-title { @apply block text-sm font-medium text-slate-800; }
+.report-issue__choice.is-selected .report-issue__choice-title { @apply text-brand-800; }
+.report-issue__choice-help { @apply block text-xs leading-snug text-slate-500; }
+.report-issue__radio { @apply mt-0.5 h-4 w-4 shrink-0 accent-brand-700; }
+.report-issue__priority-title { @apply block text-sm font-medium text-slate-900; }
+.report-issue__priority-help { @apply mt-0.5 block text-xs leading-snug text-slate-500; }
+
+/* Location */
+.report-issue__suggestion { @apply mt-2 flex flex-col gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 sm:flex-row sm:items-center sm:justify-between; }
+.report-issue__suggestion-name { @apply font-medium text-slate-900; }
+.report-issue__suggestion-actions { @apply flex shrink-0 gap-2; }
+.report-issue__map-heading { @apply mb-1.5 flex flex-wrap items-baseline justify-between gap-2; }
+.report-issue__map-label { @apply text-sm font-medium text-slate-700; }
+.report-issue__map-help { @apply text-xs text-slate-500; }
+.report-issue__map-frame { @apply rounded-lg outline-none; }
+.report-issue__map-frame.is-invalid { @apply ring-2 ring-rose-400 ring-offset-2; }
+/* The map is the main way to choose a location: tall on phones without pushing the form off-screen */
+.report-issue__map-canvas { @apply h-[52dvh] max-h-[28rem] min-h-[16rem]; }
+.report-issue__pinned { @apply mt-2 flex items-center gap-1.5 text-xs text-slate-600; }
+.report-issue__pinned-icon { @apply text-brand-700; }
+
+/* Details */
+.report-issue__description { @apply resize-y; }
+
+/* Review */
+.report-issue__review { @apply divide-y rounded-lg border; }
+.report-issue__review-row { @apply flex items-start gap-3 px-4 py-3; }
+.report-issue__review-pair { @apply min-w-0 flex-1 sm:flex sm:gap-4; }
+.report-issue__review-pair dt { @apply text-xs font-medium text-slate-500 sm:w-28 sm:shrink-0 sm:pt-0.5; }
+.report-issue__review-pair dd { @apply mt-0.5 break-words text-sm text-slate-900 sm:mt-0; }
+.report-issue__review-sub { @apply block text-xs text-slate-500; }
+.report-issue__review-description { @apply whitespace-pre-line; }
+.report-issue__edit { @apply -my-1 shrink-0; }
+.report-issue__review-photo { @apply max-h-56 rounded-lg border object-contain; }
+.report-issue__muted { @apply text-sm text-slate-500; }
+.report-issue__notice { @apply rounded-md bg-slate-50 p-3 text-xs leading-relaxed text-slate-600; }
+
+.report-issue__footer { @apply flex flex-col-reverse gap-2 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-5; }
+
+/* Confirmation */
+.report-done { @apply mx-auto max-w-xl; }
+.report-done__panel { @apply p-6 text-center sm:p-8; }
+.report-done__icon { @apply mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-50 text-emerald-700; }
+.report-done__title { @apply mt-4 text-2xl font-bold tracking-tight text-slate-950; }
+.report-done__text { @apply mt-2 text-sm text-slate-600; }
+.report-done__id { @apply font-semibold text-slate-900; }
+.report-done__steps { @apply mx-auto mt-6 max-w-xs space-y-2 text-left text-sm text-slate-600; }
+.report-done__step { @apply flex gap-2; }
+.report-done__step-number { @apply font-semibold text-brand-700; }
+.report-done__actions { @apply mt-7 flex flex-col gap-2 sm:flex-row sm:justify-center; }

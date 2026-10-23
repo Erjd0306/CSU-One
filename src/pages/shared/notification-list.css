@@ -1,0 +1,21 @@
+/* Notification rows (Notifications page, Student Home) */
+.notification-list { @apply divide-y; }
+.notification-list__item { @apply relative flex items-start gap-3 px-4 py-3.5; }
+.notification-list__item.is-compact { @apply py-3; }
+.notification-list__item.is-unread { @apply bg-brand-50/40; }
+
+.notification-list__icon { @apply mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-600; }
+.notification-list__icon--danger { @apply bg-rose-50 text-rose-700; }
+.notification-list__icon--navy { @apply bg-navy-50 text-navy-700; }
+.notification-list__icon--warning { @apply bg-amber-50 text-amber-700; }
+.notification-list__icon--success { @apply bg-emerald-50 text-emerald-700; }
+
+.notification-list__body { @apply min-w-0 flex-1 rounded-sm text-left; }
+.notification-list__heading { @apply flex items-center gap-2; }
+.notification-list__title { @apply text-sm font-medium text-slate-800; }
+.notification-list__item.is-unread .notification-list__title { @apply font-semibold text-slate-950; }
+.notification-list__dot { @apply h-2 w-2 shrink-0 rounded-full bg-brand-600; }
+.notification-list__message { @apply mt-0.5 block text-sm text-slate-600; }
+.notification-list__item.is-compact .notification-list__message { @apply line-clamp-2; }
+.notification-list__time { @apply mt-1 block text-xs text-slate-500; }
+.notification-list__mark { @apply -mr-2 shrink-0; }

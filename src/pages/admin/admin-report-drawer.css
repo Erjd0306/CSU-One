@@ -1,0 +1,8 @@
+/* Admin report drawer (opened from Reports, Map, Teams and the dashboard) */
+.report-drawer__missing { @apply text-sm text-slate-600; }
+.report-drawer__footer { @apply flex flex-wrap items-center justify-between gap-2; }
+.report-drawer__body { @apply space-y-5; }
+.report-drawer__description { @apply whitespace-pre-line text-sm leading-relaxed text-slate-700; }
+.report-drawer__photos { @apply grid gap-3 sm:grid-cols-2; }
+.report-drawer__note { @apply mt-3; }
+.report-drawer__note-actions { @apply mt-2 flex justify-end; }

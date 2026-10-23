@@ -1,0 +1,54 @@
+<!-- Student report detail: progress, information requests, evidence, location and timeline. -->
+<template data-component="StudentReportDetailView" data-from="./StudentReportDetail"
+          data-props="report showInfoRequest reply setReply error sending sendReply">
+  <div data-if="!report" class="panel">
+    <EmptyState title="Report not found" message="This report does not exist or belongs to another student.">
+      <template data-slot="action"><Link to="/student/reports" class="btn-secondary">Back to my reports</Link></template>
+    </EmptyState>
+  </div>
+
+  <div data-else class="student-report">
+    <Link to="/student/reports" class="btn-ghost student-report__back"><Icon.ArrowLeft :size="17" aria-hidden />My reports</Link>
+
+    <div class="student-report__layout">
+      <article class="panel student-report__main">
+        <ReportHeading :report="report" />
+        <MilestoneTracker :report="report" />
+
+        <section data-if="showInfoRequest" class="student-report__request" aria-labelledby="info-request">
+          <h3 id="info-request" class="student-report__request-title">The Facilities Office needs more information</h3>
+          <p class="student-report__request-text">{{ report.pendingInfoRequest }}</p>
+          <div class="student-report__reply">
+            <Field id="reply" label="Your response" :error="error">
+              <textarea id="reply" :rows="3" class="field student-report__reply-input" :class="error ? 'field-invalid' : ''"
+                        :value="reply" @change="(e) => setReply(e.target.value)"
+                        :aria-invalid="!!error" :aria-describedby="error ? 'reply-error' : undefined" :maxlength="400"></textarea>
+            </Field>
+            <div class="student-report__reply-actions">
+              <button type="button" class="btn-primary" @click="sendReply" :disabled="sending">
+                <Icon.LoaderCircle data-if="sending" :size="16" class="student-report__spinner" aria-hidden />
+                <Icon.Send data-else :size="16" aria-hidden />
+                Send response
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <DetailSection title="Description"><p class="student-report__description">{{ report.description }}</p></DetailSection>
+        <DetailSection title="Details"><ReportFacts :report="report" :showReporter="false" /></DetailSection>
+        <DetailSection title="Photo"><PhotoEvidence :src="report.photo" alt="Photo of {{ report.title }}" /></DetailSection>
+        <DetailSection data-if="report.completionPhoto" title="Completion photo">
+          <PhotoEvidence :src="report.completionPhoto" alt="Repair completed for {{ report.title }}" />
+        </DetailSection>
+        <DetailSection title="Location"><ReportLocation :report="report" /></DetailSection>
+      </article>
+
+      <aside>
+        <section class="panel student-report__timeline" aria-labelledby="timeline">
+          <h2 id="timeline" class="panel-title student-report__timeline-title">Timeline</h2>
+          <ReportTimeline :report="report" />
+        </section>
+      </aside>
+    </div>
+  </div>
+</template>

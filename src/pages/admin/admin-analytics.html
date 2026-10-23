@@ -1,0 +1,44 @@
+<!-- Admin Analytics: summary numbers, five charts (each with a table view) and recent activity. -->
+<template data-component="AdminAnalyticsView" data-from="./AnalyticsPage" data-props="stats data statusRows activity hasReports">
+  <div class="admin-analytics">
+    <PageHeader title="Analytics" description="Report trends to help plan maintenance work." />
+
+    <StatStrip :items="stats" />
+
+    <div data-if="hasReports" class="admin-analytics__body">
+      <ChartPanel title="Reports by status" :rows="statusRows" valueLabel="Reports">
+        <StatusBar :counts="data.status" />
+      </ChartPanel>
+
+      <div class="admin-analytics__grid">
+        <ChartPanel title="Monthly reports" description="Reports sent in the last six months" :rows="data.trend" valueLabel="Reports">
+          <ColumnChart :data="data.trend" />
+        </ChartPanel>
+        <ChartPanel title="Average repair time" description="From repair start to resolved, by category" :rows="data.repair" valueLabel="Average time">
+          <BarList :data="data.repair" emptyText="No finished repairs yet" />
+        </ChartPanel>
+        <ChartPanel title="Reports by category" :rows="data.category" valueLabel="Reports">
+          <BarList :data="data.category" />
+        </ChartPanel>
+        <ChartPanel title="Reports by campus area" :rows="data.area" valueLabel="Reports">
+          <BarList :data="data.area" />
+        </ChartPanel>
+      </div>
+
+      <section class="panel" aria-labelledby="recent-activity">
+        <div class="panel-header"><h2 id="recent-activity" class="panel-title">Recent activity</h2></div>
+        <ol class="admin-analytics__activity">
+          <li data-for="e in activity" :key="e.id">
+            <Link to="/admin/reports?id={{ e.reportId }}" class="admin-analytics__activity-link focusable">
+              <p class="admin-analytics__activity-title"><span class="admin-analytics__activity-label">{{ e.label }}</span> · {{ e.reportId }}</p>
+              <p class="admin-analytics__activity-meta">{{ e.reportTitle }} · {{ e.by }} · {{ e.ago }}</p>
+            </Link>
+          </li>
+        </ol>
+      </section>
+    </div>
+    <section data-else class="panel">
+      <EmptyState :icon="Icon.ChartColumn" title="No data yet" message="Charts appear here once students start sending reports." />
+    </section>
+  </div>
+</template>

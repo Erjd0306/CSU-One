@@ -1,0 +1,14 @@
+/* Personnel assignment control (report drawer, Teams page) */
+.assign-control { @apply space-y-2; }
+.assign-control__resolved { @apply text-sm text-slate-500; }
+.assign-control__row { @apply flex flex-col gap-2 sm:flex-row; }
+.assign-control__field { @apply min-w-0 flex-1; }
+.assign-control__button { @apply shrink-0; }
+.assign-control__warning { @apply flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900; }
+.assign-control__warning-icon { @apply mt-0.5 shrink-0; }
+
+/* Personnel suggestion parts */
+.assign-option__avatar { @apply grid h-7 w-7 place-items-center rounded-full bg-navy-900 text-[10px] font-semibold text-white; }
+.assign-option__meta { @apply flex flex-col items-end gap-0.5 text-right; }
+.assign-option__availability { @apply inline-flex items-center gap-1.5; }
+.assign-option__dot { @apply h-2 w-2 rounded-full; }

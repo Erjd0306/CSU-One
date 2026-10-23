@@ -1,0 +1,56 @@
+/* Admin Reports */
+.admin-reports { @apply space-y-5; }
+
+.admin-reports__toolbar { @apply space-y-3 border-b p-4; }
+.admin-reports__search-row { @apply flex flex-col gap-2 sm:flex-row; }
+.admin-reports__search { @apply flex-1; }
+.admin-reports__search-actions { @apply grid grid-cols-2 gap-2 sm:flex; }
+.admin-reports__filters-toggle { @apply lg:hidden; }
+.admin-reports__filters-toggle.is-active { @apply border-brand-600 text-brand-700; }
+.admin-reports__sort { @apply min-w-0 sm:w-52; }
+
+/* Secondary filters: behind the Filters button on smaller screens, always shown on desktop. */
+.admin-reports__filters { @apply hidden grid-cols-1 gap-2 min-[480px]:grid-cols-2 lg:grid lg:grid-cols-5; }
+.admin-reports__filters.is-open { @apply grid; }
+.admin-reports__dates { @apply grid grid-cols-2 gap-2 min-[480px]:col-span-2 lg:col-span-2; }
+.admin-reports__date { @apply block; }
+.admin-reports__date-label { @apply mb-1 block text-xs font-medium text-slate-600; }
+
+.admin-reports__chips { @apply flex flex-wrap items-center gap-1.5; }
+.admin-reports__chip { @apply max-w-full pr-2; }
+.admin-reports__chip-label { @apply truncate; }
+.admin-reports__chip-x { @apply shrink-0 text-slate-400; }
+
+.admin-reports__summary { @apply flex items-center justify-between gap-2 border-b px-4 py-2; }
+.admin-reports__count { @apply text-xs text-slate-500; }
+.admin-reports__clear { @apply -mr-2; }
+
+.admin-reports__cards { @apply divide-y lg:hidden; }
+
+/* Desktop table */
+.admin-reports__table-wrap { @apply hidden lg:block; }
+.admin-reports__table { @apply w-full table-fixed text-left text-sm; }
+.admin-reports__table thead tr { @apply border-b bg-slate-50 text-xs font-medium text-slate-500; }
+.admin-reports__table th { @apply px-3 py-2.5 font-medium; }
+.admin-reports__table tbody { @apply divide-y; }
+.admin-reports__col-report { @apply w-[30%]; }
+.admin-reports__table th.admin-reports__col-report { @apply px-4; }
+.admin-reports__col-location { @apply w-[20%]; }
+.admin-reports__col-reporter { @apply w-[14%]; }
+.admin-reports__col-priority { @apply w-[9%]; }
+.admin-reports__col-status { @apply w-[11%]; }
+.admin-reports__col-assignee { @apply w-[12%]; }
+.admin-reports__table th.admin-reports__col-open { @apply w-10 px-2; }
+
+.admin-reports__row { @apply cursor-pointer align-top transition hover:bg-slate-50; }
+.admin-reports__cell-report { @apply px-4 py-3; }
+.admin-reports__cell { @apply px-3 py-3; }
+.admin-reports__cell-muted { @apply px-3 py-3 text-slate-600; }
+.admin-reports__cell-chevron { @apply px-2 py-3 text-slate-400; }
+.admin-reports__title { @apply rounded-sm text-left font-medium text-slate-900 hover:text-brand-700; }
+.admin-reports__sub { @apply mt-0.5 text-xs text-slate-500; }
+.admin-reports__clamp { @apply line-clamp-2; }
+.admin-reports__truncate { @apply truncate; }
+.admin-reports__assignee { @apply block truncate; }
+.admin-reports__unassigned { @apply text-slate-500; }
+.admin-reports__updated { @apply text-xs text-slate-500; }

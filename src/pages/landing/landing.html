@@ -1,0 +1,54 @@
+<!-- CSU-One landing page: the first screen for visitors who are not logged in. Always light. -->
+<template data-component="LandingView">
+  <div class="landing">
+    <div class="landing__glow" aria-hidden></div>
+
+    <main class="landing__main">
+      <div class="landing__brand landing__rise">
+        <span class="landing__logo"><AppLogo variant="badge" /></span>
+        <h1 class="landing__title">CSU<span class="landing__title-dash">-</span>One</h1>
+        <p class="landing__tagline">See a problem on campus?<br />Report it in a minute.</p>
+      </div>
+
+      <section class="landing__card landing__rise" aria-labelledby="how-it-works">
+        <h2 id="how-it-works" class="sr-only">How it works</h2>
+        <ol class="landing__steps">
+          <li class="landing__step">
+            <span class="landing__step-icon"><Icon.MapPin :size="19" aria-hidden /></span>
+            <span class="landing__step-title">Pin it</span>
+            <span class="landing__step-help">on the map</span>
+          </li>
+          <li class="landing__step">
+            <span class="landing__step-icon"><Icon.Camera :size="19" aria-hidden /></span>
+            <span class="landing__step-title">Describe it</span>
+            <span class="landing__step-help">with a photo</span>
+          </li>
+          <li class="landing__step">
+            <span class="landing__step-icon"><Icon.BellRing :size="19" aria-hidden /></span>
+            <span class="landing__step-title">Track it</span>
+            <span class="landing__step-help">until it&apos;s fixed</span>
+          </li>
+        </ol>
+
+        <div class="landing__track">
+          <p class="landing__track-label">Follow every step of the repair</p>
+          <ol class="landing__track-line" aria-label="Report status: Open, Assigned, In progress, Resolved">
+            <li class="landing__track-stop is-open"><span class="landing__track-dot"></span>Open</li>
+            <li class="landing__track-stop is-assigned"><span class="landing__track-dot"></span>Assigned</li>
+            <li class="landing__track-stop is-progress"><span class="landing__track-dot"></span>In progress</li>
+            <li class="landing__track-stop is-resolved"><span class="landing__track-dot"><Icon.Check :size="9" :strokeWidth="3.5" aria-hidden /></span>Resolved</li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="landing__actions landing__rise">
+        <Link to="/login" class="btn-primary landing__cta">Log in<Icon.ArrowRight :size="17" aria-hidden /></Link>
+        <Link to="/register" class="btn-secondary landing__secondary">Create an account</Link>
+      </div>
+    </main>
+
+    <footer class="landing__footer">
+      <p>Cagayan State University · Carig Campus</p>
+    </footer>
+  </div>
+</template>

@@ -1,0 +1,24 @@
+<!-- Maintenance Task Map: active tasks on the CSU Carig map; selecting a pin opens the task. -->
+<template data-component="MaintenanceMapView" data-from="./MaintenanceMap" data-props="active openTask">
+  <div class="maintenance-map">
+    <PageHeader title="Task map" description="Your active tasks on the campus map. Tap a pin to open it." />
+    <section class="panel">
+      <div class="maintenance-map__legend-row">
+        <MapLegend />
+        <p class="maintenance-map__count">{{ active.length }} active task{{ active.length === 1 ? '' : 's' }}</p>
+      </div>
+      <div class="maintenance-map__layout">
+        <div class="maintenance-map__canvas-wrap">
+          <CampusMap label="Map of your active tasks" :reports="active" :onMarkerSelect="openTask" className="maintenance-map__canvas" />
+        </div>
+        <div class="maintenance-map__list">
+          <h2 class="sr-only">Active tasks</h2>
+          <ul data-if="active.length" class="maintenance-map__items">
+            <li data-for="r in active" :key="r.id"><ReportCard :report="r" to="/maintenance/tasks/{{ r.id }}" /></li>
+          </ul>
+          <EmptyState data-else title="No active tasks" message="Assigned tasks will appear on the map." />
+        </div>
+      </div>
+    </section>
+  </div>
+</template>

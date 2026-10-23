@@ -1,0 +1,24 @@
+<!-- Searchable personnel picker used to assign or reassign a report. -->
+<template data-component="AssignControlView" data-from="./AssignControl"
+          data-props="resolved fieldId isReassign selected setSelected options person unavailable availabilityLabel assign">
+  <p data-if="resolved" class="assign-control__resolved">Resolved reports must be reopened before they can be assigned again.</p>
+
+  <div data-else class="assign-control">
+    <label :for="fieldId" class="sr-only">{{ isReassign ? 'Reassign to' : 'Assign to' }}</label>
+    <div class="assign-control__row">
+      <div class="assign-control__field">
+        <SearchableCombobox :id="fieldId" :value="selected" :options="options" :onChange="setSelected"
+                            :placeholder="isReassign ? 'Search personnel to reassign' : 'Search by name, team, or skill'"
+                            :icon="Icon.Users" emptyMessage="No matching maintenance personnel."
+                            :resultsLabel="(n) => `${n} personnel found`" clearLabel="Clear selected personnel" />
+      </div>
+      <button type="button" class="btn-primary assign-control__button" @click="assign" :disabled="!person">
+        <Icon.UserCheck :size="16" aria-hidden />{{ unavailable ? 'Assign anyway' : isReassign ? 'Reassign' : 'Assign' }}
+      </button>
+    </div>
+    <p data-if="person && unavailable" role="alert" class="assign-control__warning">
+      <Icon.TriangleAlert :size="14" class="assign-control__warning-icon" aria-hidden />
+      {{ person?.name }} is {{ availabilityLabel }}. The task may be delayed. Choose someone else or assign anyway.
+    </p>
+  </div>
+</template>

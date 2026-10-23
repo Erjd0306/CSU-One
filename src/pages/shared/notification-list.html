@@ -1,0 +1,23 @@
+<!-- Notification rows, shared by the Notifications page and Student Home. -->
+<template data-component="NotificationListView" data-from="./NotificationsPage" data-props="items compact">
+  <ul data-if="items.length" class="notification-list">
+    <li data-for="item in items" :key="item.id"
+        class="notification-list__item"
+        :class="`${compact ? 'is-compact' : ''} ${item.read ? '' : 'is-unread'}`">
+      <span class="notification-list__icon notification-list__icon--{{ item.tone }}"><item.Icon :size="15" aria-hidden /></span>
+      <button type="button" @click="item.open" class="notification-list__body focusable">
+        <span class="notification-list__heading">
+          <span class="notification-list__title">{{ item.title }}</span>
+          <span data-if="!item.read" class="notification-list__dot" aria-label="Unread"></span>
+        </span>
+        <span class="notification-list__message">{{ item.message }}</span>
+        <span class="notification-list__time">{{ item.time }}</span>
+      </button>
+      <button data-if="!item.read && !compact" type="button" class="btn-ghost btn-sm notification-list__mark"
+              @click="item.markRead" aria-label='Mark "{{ item.title }}" as read'>
+        Mark read
+      </button>
+    </li>
+  </ul>
+  <EmptyState data-else :icon="Icon.BellOff" title="No notifications" message="Updates about reports will appear here." />
+</template>

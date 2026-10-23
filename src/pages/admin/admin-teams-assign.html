@@ -1,0 +1,33 @@
+<!-- Teams page modal: pick an open or active report and assign it to one person. -->
+<template data-component="AssignToPersonView" data-from="./TeamsPage"
+          data-props="person availabilityLabel candidates selected setSelected confirm onClose">
+  <Modal title="Assign a report to {{ person.name }}" description="{{ person.position }} · {{ availabilityLabel }}" :onClose="onClose">
+    <template data-slot="footer">
+      <div class="teams-assign__footer">
+        <button type="button" class="btn-secondary" @click="onClose">Cancel</button>
+        <button type="button" class="btn-primary" :disabled="!selected" @click="confirm">Assign report</button>
+      </div>
+    </template>
+
+    <fieldset data-if="candidates.length">
+      <legend class="teams-assign__legend">Open reports are listed first. Choosing an assigned report reassigns it.</legend>
+      <ul class="teams-assign__list">
+        <li data-for="c in candidates" :key="c.report.id">
+          <label class="teams-assign__option" :class="selected === c.report.id ? 'is-selected' : ''">
+            <input type="radio" name="assign-report" class="teams-assign__radio" :value="c.report.id"
+                   :checked="selected === c.report.id" @change="() => setSelected(c.report.id)" />
+            <span class="teams-assign__text">
+              <span class="teams-assign__title-row">
+                <span class="teams-assign__title">{{ c.report.title }}</span>
+                <PriorityBadge :priority="c.report.priority" />
+                <StatusBadge :status="c.report.status" />
+              </span>
+              <span class="teams-assign__meta">{{ c.report.id }} · {{ c.report.category }} · {{ c.location }}</span>
+            </span>
+          </label>
+        </li>
+      </ul>
+    </fieldset>
+    <EmptyState data-else title="Nothing to assign" message="There are no open or active reports available." />
+  </Modal>
+</template>

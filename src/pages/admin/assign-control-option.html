@@ -1,0 +1,8 @@
+<!-- Parts of one personnel suggestion: the initials avatar, or the availability and task count. -->
+<template data-component="AssignOptionPart" data-from="./AssignControl" data-props="part initials dot availability active">
+  <span data-if="part === 'avatar'" class="assign-option__avatar">{{ initials }}</span>
+  <span data-else class="assign-option__meta">
+    <span class="assign-option__availability"><span aria-hidden class="assign-option__dot {{ dot }}"></span>{{ availability }}</span>
+    <span>{{ active }} active</span>
+  </span>
+</template>

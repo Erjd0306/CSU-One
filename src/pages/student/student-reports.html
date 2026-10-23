@@ -1,0 +1,38 @@
+<!-- My Reports: the student's own reports with search, category, sort and status filters. -->
+<template data-component="StudentReportsView" data-from="./MyReports"
+          data-props="mine visible query setQuery category setCategory categoryOptions sort setSort sortOptions status setStatus statusOptions counts filtered clearFilters submittedLabel">
+  <div class="student-reports">
+    <PageHeader title="My reports" description="Everything you reported and where it stands.">
+      <template data-slot="actions"><Link to="/student/report" class="btn-primary">Report an Issue</Link></template>
+    </PageHeader>
+
+    <section class="panel" aria-label="Your reports">
+      <div class="student-reports__filters">
+        <div class="student-reports__controls">
+          <SearchInput label="Search your reports" placeholder="Search by title, ID, or location" :value="query" @change="(e) => setQuery(e.target.value)" />
+          <AppSelect ariaLabel="Filter by category" :value="category" :options="categoryOptions" :onChange="setCategory" />
+          <AppSelect ariaLabel="Sort reports" :value="sort" :options="sortOptions" :onChange="setSort" />
+        </div>
+        <ChipGroup label="Filter by status" :options="statusOptions" :value="status" :onChange="setStatus" :counts="counts" />
+      </div>
+
+      <p class="student-reports__count" aria-live="polite">
+        {{ visible.length }} of {{ mine.length }} report{{ mine.length === 1 ? '' : 's' }}
+      </p>
+
+      <ul data-if="visible.length" class="student-reports__list">
+        <li data-for="r in visible" :key="r.id">
+          <ReportCard :report="r" to="/student/reports/{{ r.id }}" :meta="submittedLabel(r)" showFlags />
+        </li>
+      </ul>
+      <EmptyState data-else-if="mine.length" title="No matching reports" message="Try a different search, status, or category.">
+        <template data-slot="action">
+          <button data-if="filtered" type="button" class="btn-secondary" @click="clearFilters">Clear filters</button>
+        </template>
+      </EmptyState>
+      <EmptyState data-else :icon="Icon.ClipboardList" title="No reports yet" message="See something broken on campus? Report it in a minute.">
+        <template data-slot="action"><Link to="/student/report" class="btn-primary">Report an Issue</Link></template>
+      </EmptyState>
+    </section>
+  </div>
+</template>

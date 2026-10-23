@@ -1,0 +1,11 @@
+/* Admin Campus Map */
+.admin-map { @apply space-y-5; }
+.admin-map__filters { @apply flex flex-col gap-3 border-b p-4 lg:flex-row lg:items-center lg:justify-between; }
+.admin-map__selects { @apply grid grid-cols-2 gap-2 lg:w-[22rem]; }
+.admin-map__legend-row { @apply flex flex-wrap items-center justify-between gap-2 border-b px-4 py-2.5; }
+.admin-map__count { @apply text-xs text-slate-500; }
+.admin-map__layout { @apply grid lg:grid-cols-[minmax(0,1fr)_20rem]; }
+.admin-map__canvas-wrap { @apply p-3; }
+.admin-map__canvas { @apply h-[26rem] lg:h-[34rem]; }
+.admin-map__list { @apply border-t lg:max-h-[36rem] lg:overflow-y-auto lg:border-l lg:border-t-0; }
+.admin-map__items { @apply divide-y; }

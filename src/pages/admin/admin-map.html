@@ -1,0 +1,36 @@
+<!-- Admin Campus Map: every report on the CSU Carig map with status, priority and category filters. -->
+<template data-component="AdminMapView" data-from="./AdminMap"
+          data-props="status setStatus statusOptions priority setPriority priorityOptions category setCategory categoryOptions visible hasReports openId setOpenId"
+          data-imports="ReportDrawer:./ReportDrawer">
+  <div class="admin-map">
+    <PageHeader title="Campus map" description="Every report pinned on the CSU Carig Campus map." />
+
+    <section class="panel">
+      <div class="admin-map__filters">
+        <ChipGroup label="Filter by status" :options="statusOptions" :value="status" :onChange="setStatus" />
+        <div class="admin-map__selects">
+          <AppSelect ariaLabel="Filter by priority" :value="priority" :options="priorityOptions" :onChange="setPriority" />
+          <AppSelect ariaLabel="Filter by category" :value="category" :options="categoryOptions" :onChange="setCategory" />
+        </div>
+      </div>
+      <div class="admin-map__legend-row">
+        <MapLegend />
+        <p class="admin-map__count" aria-live="polite">{{ visible.length }} report{{ visible.length === 1 ? '' : 's' }} shown</p>
+      </div>
+      <div class="admin-map__layout">
+        <div class="admin-map__canvas-wrap">
+          <CampusMap label="Map of campus reports" :reports="visible" :selectedId="openId ?? undefined" :onViewReport="(r) => setOpenId(r.id)" className="admin-map__canvas" />
+        </div>
+        <div class="admin-map__list">
+          <h2 class="sr-only">Reports on the map</h2>
+          <ul data-if="visible.length" class="admin-map__items">
+            <li data-for="r in visible" :key="r.id"><ReportCard :report="r" :onSelect="(x) => setOpenId(x.id)" /></li>
+          </ul>
+          <EmptyState data-else :title="hasReports ? 'No reports match' : 'No reports yet'" :message="hasReports ? 'Change the filters to see more pins.' : 'Reported problems will be pinned here.'" />
+        </div>
+      </div>
+    </section>
+
+    <ReportDrawer data-if="openId" :reportId="openId" :onClose="() => setOpenId(null)" />
+  </div>
+</template>

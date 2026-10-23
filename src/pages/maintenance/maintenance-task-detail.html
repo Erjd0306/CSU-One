@@ -1,0 +1,77 @@
+<!-- Maintenance task detail: progress, next action, evidence, location, notes, timeline and update dialogs. -->
+<template data-component="MaintenanceTaskDetailView" data-from="./TaskDetail"
+          data-props="report backTo backLabel canWork dialog openDialog closeDialog textCopy text setText textError saveText photo setPhoto savePhoto photoChanged describe"
+          data-imports="RepairActions:./RepairActions">
+  <div data-if="!report" class="panel">
+    <EmptyState title="Task not found" message="This task does not exist or is no longer assigned to you.">
+      <template data-slot="action"><Link to="/maintenance" class="btn-secondary">Back to tasks</Link></template>
+    </EmptyState>
+  </div>
+
+  <div data-else class="task-detail">
+    <Link :to="backTo" class="btn-ghost task-detail__back"><Icon.ArrowLeft :size="17" aria-hidden />{{ backLabel }}</Link>
+
+    <div class="task-detail__layout">
+      <article class="panel task-detail__main">
+        <ReportHeading :report="report" />
+        <MilestoneTracker :report="report" />
+        <ReportFlags :report="report" />
+
+        <!-- The next workflow action always sits here, directly under the progress tracker -->
+        <section class="task-detail__progress" aria-labelledby="next-step">
+          <h3 id="next-step" class="task-detail__progress-title">Repair progress</h3>
+          <RepairActions :report="report" :onAddPhoto="() => openDialog('photo')" />
+          <div data-if="canWork" class="task-detail__tools">
+            <button type="button" class="btn-secondary btn-sm" @click="() => openDialog('note')"><Icon.MessageSquarePlus :size="14" aria-hidden />Progress note</button>
+            <button type="button" class="btn-secondary btn-sm" @click="() => openDialog('photo')"><Icon.Camera :size="14" aria-hidden />{{ report.completionPhoto ? 'Replace photo' : 'Completion photo' }}</button>
+            <button type="button" class="btn-secondary btn-sm" @click="() => openDialog('materials')"><Icon.PackageOpen :size="14" aria-hidden />Need materials</button>
+          </div>
+        </section>
+
+        <DetailSection title="Student's description"><p class="task-detail__description">{{ report.description }}</p></DetailSection>
+        <DetailSection title="Exact location"><ReportLocation :report="report" /></DetailSection>
+        <DetailSection title="Photo evidence">
+          <div class="task-detail__photos">
+            <div><p class="task-detail__photo-label">From the student</p><PhotoEvidence :src="report.photo" alt="Photo of {{ report.title }}" /></div>
+            <div><p class="task-detail__photo-label">Completion photo</p><PhotoEvidence :src="report.completionPhoto" alt="Completion photo for {{ report.title }}" emptyLabel="No completion photo yet" /></div>
+          </div>
+        </DetailSection>
+        <DetailSection title="Details"><ReportFacts :report="report" /></DetailSection>
+        <DetailSection title="Internal maintenance notes"><InternalNotes :report="report" /></DetailSection>
+      </article>
+
+      <aside>
+        <section class="panel task-detail__timeline" aria-labelledby="timeline">
+          <h2 id="timeline" class="panel-title task-detail__timeline-title">Timeline</h2>
+          <ReportTimeline :report="report" />
+        </section>
+      </aside>
+    </div>
+
+    <!-- Progress note / materials request -->
+    <Modal data-if="textCopy" :title="textCopy.title" description="{{ report.id }} · {{ report.title }}" :onClose="closeDialog" size="sm">
+      <template data-slot="footer">
+        <div class="task-detail__dialog-actions">
+          <ModalCancelButton />
+          <button type="button" class="btn-primary" @click="saveText" :disabled="!text.trim()">{{ textCopy.button }}</button>
+        </div>
+      </template>
+      <Field id="action-text" :label="textCopy.label" required :error="textError" :hint="textCopy.hint">
+        <textarea id="action-text" :rows="4" class="field" :class="textError ? 'field-invalid' : ''" :value="text" @change="(e) => setText(e.target.value)"
+                  :aria-invalid="!!textError" :aria-describedby="describe('action-text', textError, textCopy.hint)" :maxlength="400"
+                  :placeholder="textCopy.placeholder"></textarea>
+      </Field>
+    </Modal>
+
+    <!-- Completion photo -->
+    <Modal data-if="dialog === 'photo'" title="Completion photo" description="Show the finished repair." :onClose="closeDialog" size="sm">
+      <template data-slot="footer">
+        <div class="task-detail__dialog-actions">
+          <ModalCancelButton />
+          <button type="button" class="btn-primary" @click="savePhoto" :disabled="!photoChanged">Save photo</button>
+        </div>
+      </template>
+      <PhotoPicker id="completion-photo" :value="photo" :onChange="setPhoto" label="Photo of the completed repair" />
+    </Modal>
+  </div>
+</template>

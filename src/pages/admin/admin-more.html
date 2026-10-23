@@ -1,0 +1,38 @@
+<!-- Administrator's mobile "More" tab: remaining pages plus the same account menu as the profile dropdown. -->
+<template data-component="AdminMoreView" data-from="./AdminMore" data-props="user roleLabel unread run dialogs">
+  <div class="admin-more">
+    <PageHeader title="More" />
+
+    <nav class="panel" aria-label="More pages">
+      <ul class="admin-more__list">
+        <li>
+          <Link to="/admin/analytics" class="admin-more__link focusable">
+            <Icon.BarChart3 :size="18" class="admin-more__icon" aria-hidden />
+            <span class="admin-more__label">Analytics</span>
+            <Icon.ChevronRight :size="16" class="admin-more__chevron" aria-hidden />
+          </Link>
+        </li>
+        <li>
+          <Link to="/admin/notifications" class="admin-more__link focusable">
+            <Icon.Bell :size="18" class="admin-more__icon" aria-hidden />
+            <span class="admin-more__label">Notifications</span>
+            <span data-if="unread" class="admin-more__badge">{{ unread }}<span class="sr-only"> unread</span></span>
+            <Icon.ChevronRight :size="16" class="admin-more__chevron" aria-hidden />
+          </Link>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="panel admin-more__account" aria-labelledby="account-menu">
+      <div class="admin-more__identity">
+        <Avatar :initials="user.initials" size="sm" />
+        <div class="admin-more__identity-text">
+          <h2 id="account-menu" class="admin-more__name">{{ user.name }}</h2>
+          <p class="admin-more__role">{{ roleLabel }}</p>
+        </div>
+      </div>
+      <ProfileMenuItems :onSelect="run" />
+    </section>
+    {{ dialogs }}
+  </div>
+</template>

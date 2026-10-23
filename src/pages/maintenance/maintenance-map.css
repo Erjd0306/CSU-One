@@ -1,0 +1,9 @@
+/* Maintenance Task Map */
+.maintenance-map { @apply space-y-5; }
+.maintenance-map__legend-row { @apply flex flex-wrap items-center justify-between gap-2 border-b px-4 py-2.5; }
+.maintenance-map__count { @apply text-xs text-slate-500; }
+.maintenance-map__layout { @apply grid lg:grid-cols-[minmax(0,1fr)_20rem]; }
+.maintenance-map__canvas-wrap { @apply p-3; }
+.maintenance-map__canvas { @apply h-[24rem] lg:h-[32rem]; }
+.maintenance-map__list { @apply border-t lg:max-h-[34rem] lg:overflow-y-auto lg:border-l lg:border-t-0; }
+.maintenance-map__items { @apply divide-y; }

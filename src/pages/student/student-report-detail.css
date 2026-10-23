@@ -1,0 +1,18 @@
+/* Student report detail */
+.student-report { @apply space-y-5; }
+.student-report__back { @apply -ml-3; }
+.student-report__layout { @apply grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]; }
+.student-report__main { @apply space-y-5 p-4 sm:p-5; }
+
+.student-report__request { @apply rounded-lg border border-navy-200 bg-navy-50 p-4; }
+.student-report__request-title { @apply text-sm font-semibold text-navy-900; }
+.student-report__request-text { @apply mt-1 text-sm text-navy-800; }
+.student-report__reply { @apply mt-3; }
+.student-report__reply-input { @apply bg-white; }
+.student-report__reply-actions { @apply mt-2 flex justify-end; }
+.student-report__spinner { @apply animate-spin; }
+
+.student-report__description { @apply whitespace-pre-line text-sm leading-relaxed text-slate-700; }
+
+.student-report__timeline { @apply p-4 sm:p-5 lg:sticky lg:top-20; }
+.student-report__timeline-title { @apply mb-4; }

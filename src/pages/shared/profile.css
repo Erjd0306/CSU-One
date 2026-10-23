@@ -1,0 +1,30 @@
+/* Profile page (all roles) */
+.profile-page { @apply mx-auto max-w-3xl space-y-6; }
+
+.profile-page__identity { @apply flex items-center gap-4; }
+.profile-page__identity-text { @apply min-w-0; }
+.profile-page__name { @apply truncate text-lg font-semibold text-slate-900; }
+.profile-page__role { @apply text-sm text-slate-500; }
+
+.profile-page__rows { @apply grid gap-x-6 gap-y-3 sm:grid-cols-2; }
+.profile-page__row { @apply min-w-0; }
+.profile-page__row dt { @apply text-xs text-slate-500; }
+.profile-page__row dd { @apply mt-0.5 break-words text-sm font-medium text-slate-800; }
+.profile-page__note { @apply mt-4 text-xs text-slate-500; }
+
+.profile-page__account { @apply space-y-5; }
+.profile-page__reset { @apply flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between; }
+.profile-page__reset-text { @apply text-sm text-slate-600; }
+.profile-page__reset-button { @apply shrink-0; }
+
+.profile-page__toggles { @apply -my-3 divide-y; }
+
+.profile-page__logout { @apply flex flex-col gap-3 rounded-lg border border-rose-200 bg-white p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5; }
+.profile-page__logout-title { @apply text-base font-semibold text-slate-900; }
+.profile-page__logout-text { @apply mt-0.5 text-sm text-slate-600; }
+.profile-page__logout-button { @apply shrink-0; }
+
+/* Change-password form */
+.profile-password { @apply space-y-4; }
+.profile-password__pair { @apply grid gap-4 sm:grid-cols-2; }
+.profile-password__actions { @apply flex justify-end; }

@@ -1,0 +1,14 @@
+/* Admin "More" (mobile) */
+.admin-more { @apply mx-auto max-w-2xl space-y-6; }
+.admin-more__list { @apply divide-y; }
+.admin-more__link { @apply flex min-h-12 items-center gap-3 px-4 py-2.5 text-sm text-slate-800 hover:bg-slate-50 active:bg-slate-100; }
+.admin-more__icon { @apply shrink-0 text-slate-500; }
+.admin-more__label { @apply flex-1; }
+.admin-more__badge { @apply rounded-full bg-brand-700 px-2 py-0.5 text-xs font-semibold text-white; }
+.admin-more__chevron { @apply text-slate-400; }
+
+.admin-more__account { @apply overflow-hidden; }
+.admin-more__identity { @apply flex items-center gap-3 border-b px-4 py-3; }
+.admin-more__identity-text { @apply min-w-0; }
+.admin-more__name { @apply truncate text-sm font-semibold text-slate-900; }
+.admin-more__role { @apply text-xs text-slate-500; }

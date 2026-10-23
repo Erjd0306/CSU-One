@@ -1,0 +1,22 @@
+<!-- Notifications page (all roles). -->
+<template data-component="NotificationsView" data-from="./NotificationsPage"
+          data-props="items visible view setView unread markAll"
+          data-imports="NotificationList:./NotificationsPage">
+  <div class="notifications-page">
+    <PageHeader title="Notifications" description="Updates on your reports and tasks.">
+      <template data-slot="actions">
+        <button type="button" class="btn-secondary" :disabled="!unread" @click="markAll">
+          <Icon.CheckCheck :size="16" aria-hidden />Mark all as read
+        </button>
+      </template>
+    </PageHeader>
+
+    <section class="panel" aria-label="Notification list">
+      <div class="notifications-page__filters">
+        <ChipGroup label="Show" :options="['All', 'Unread'] as const" :value="view" :onChange="setView" :counts="{ All: items.length, Unread: unread }" />
+      </div>
+      <NotificationList data-if="visible.length || view === 'All'" :items="visible" />
+      <EmptyState data-else :icon="Icon.CheckCheck" title="You're all caught up" message="There are no unread notifications." />
+    </section>
+  </div>
+</template>

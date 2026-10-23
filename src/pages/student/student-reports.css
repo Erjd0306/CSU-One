@@ -1,0 +1,6 @@
+/* My Reports */
+.student-reports { @apply space-y-5; }
+.student-reports__filters { @apply space-y-3 border-b p-4; }
+.student-reports__controls { @apply grid gap-2 sm:grid-cols-[minmax(0,1fr)_12rem_11rem]; }
+.student-reports__count { @apply border-b px-4 py-2 text-xs text-slate-500; }
+.student-reports__list { @apply divide-y; }

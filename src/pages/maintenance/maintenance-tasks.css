@@ -1,0 +1,25 @@
+/* Maintenance Tasks */
+.maintenance-tasks { @apply space-y-6; }
+
+.maintenance-tasks__urgent { @apply flex items-center gap-3 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3; }
+.maintenance-tasks__urgent-icon { @apply shrink-0 text-rose-700; }
+.maintenance-tasks__urgent-text { @apply flex-1 text-sm text-rose-900; }
+.maintenance-tasks__urgent-count { @apply font-semibold; }
+.maintenance-tasks__urgent-button { @apply shrink-0 text-rose-800 hover:bg-rose-100; }
+
+.maintenance-tasks__details { @apply inline-flex items-center gap-1 text-sm; }
+.maintenance-tasks__current { @apply space-y-4 p-4 sm:p-5; }
+.maintenance-tasks__badges { @apply flex flex-wrap items-center gap-2; }
+.maintenance-tasks__id { @apply text-xs font-medium text-slate-500; }
+.maintenance-tasks__title { @apply mt-1.5 text-base font-semibold text-slate-900; }
+.maintenance-tasks__location { @apply mt-1 flex items-start gap-1.5 text-sm text-slate-600; }
+.maintenance-tasks__location-icon { @apply mt-0.5 shrink-0 text-brand-700; }
+.maintenance-tasks__next { @apply border-t pt-4; }
+
+.maintenance-tasks__filters { @apply space-y-3 border-b p-4; }
+.maintenance-tasks__controls { @apply grid gap-2 sm:grid-cols-[minmax(0,1fr)_12rem]; }
+.maintenance-tasks__count { @apply border-b px-4 py-2 text-xs text-slate-500; }
+.maintenance-tasks__list { @apply divide-y; }
+.maintenance-tasks__item { @apply relative; }
+/* Crimson edge on tasks that are new (assigned but not yet accepted) */
+.maintenance-tasks__new-marker { @apply absolute left-0 top-0 h-full w-0.5 bg-brand-700; }

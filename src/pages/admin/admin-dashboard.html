@@ -1,0 +1,78 @@
+<!-- Admin Dashboard: urgent/open/assigned/in-progress counts, needs attention, map, workload, recent reports. -->
+<template data-component="AdminDashboardView" data-from="./AdminDashboard" data-props="stats attention active openReport teamLoad recent">
+  <div class="admin-dashboard">
+    <PageHeader title="Dashboard" description="What needs attention across CSU Carig today.">
+      <template data-slot="actions">
+        <Link to="/admin/reports" class="btn-primary admin-dashboard__manage">Manage reports<Icon.ArrowRight :size="16" aria-hidden /></Link>
+      </template>
+    </PageHeader>
+
+    <StatStrip :items="stats" />
+
+    <div class="admin-dashboard__layout">
+      <div class="admin-dashboard__main">
+        <section class="panel" aria-labelledby="attention">
+          <div class="panel-header">
+            <div class="admin-dashboard__heading">
+              <h2 id="attention" class="panel-title">Needs attention</h2>
+              <p class="admin-dashboard__subtitle">Urgent, unassigned, or waiting for materials</p>
+            </div>
+            <Link to="/admin/reports" class="link admin-dashboard__more">All<Icon.ArrowRight :size="14" aria-hidden /></Link>
+          </div>
+          <ul data-if="attention.length" class="admin-dashboard__list">
+            <li data-for="r in attention" :key="r.id"><ReportCard :report="r" to="/admin/reports?id={{ r.id }}" showFlags /></li>
+          </ul>
+          <EmptyState data-else :icon="Icon.CircleCheck" title="All clear" message="Nothing is urgent or waiting for assignment." />
+        </section>
+
+        <section class="panel" aria-labelledby="campus-map">
+          <div class="panel-header">
+            <h2 id="campus-map" class="panel-title">Campus issue map</h2>
+            <Link to="/admin/map" class="link admin-dashboard__more">Full map<Icon.ArrowRight :size="14" aria-hidden /></Link>
+          </div>
+          <div class="admin-dashboard__map">
+            <CampusMap label="Map of active reports at CSU Carig" :reports="active" :onViewReport="openReport" className="admin-dashboard__map-canvas" />
+            <MapLegend />
+          </div>
+        </section>
+      </div>
+
+      <aside class="admin-dashboard__side" aria-label="Workload and recent reports">
+        <section class="panel" aria-labelledby="team-workload">
+          <div class="panel-header">
+            <h2 id="team-workload" class="panel-title">Maintenance workload</h2>
+            <Link to="/admin/teams" class="link admin-dashboard__link">Teams</Link>
+          </div>
+          <ul class="admin-dashboard__list">
+            <li data-for="t in teamLoad" :key="t.id" class="admin-dashboard__team">
+              <div class="admin-dashboard__team-row">
+                <span class="admin-dashboard__team-name">{{ t.name }}</span>
+                <span class="admin-dashboard__team-count">{{ t.active }} active · {{ t.members }} staff</span>
+              </div>
+              <div class="admin-dashboard__bar"><div class="admin-dashboard__bar-fill" :style="{ width: `${t.percent}%` }"></div></div>
+            </li>
+          </ul>
+        </section>
+
+        <section class="panel" aria-labelledby="recent-reports">
+          <div class="panel-header">
+            <h2 id="recent-reports" class="panel-title">Recent reports</h2>
+            <Link to="/admin/reports?sort=newest" class="link admin-dashboard__link">View all</Link>
+          </div>
+          <ul data-if="recent.length" class="admin-dashboard__list">
+            <li data-for="item in recent" :key="item.report.id">
+              <Link to="/admin/reports?id={{ item.report.id }}" class="admin-dashboard__recent focusable">
+                <span class="admin-dashboard__recent-text">
+                  <span class="admin-dashboard__recent-title">{{ item.report.title }}</span>
+                  <span class="admin-dashboard__recent-meta">{{ item.report.id }} · {{ item.ago }}</span>
+                </span>
+                <StatusBadge :status="item.report.status" />
+              </Link>
+            </li>
+          </ul>
+          <EmptyState data-else :icon="Icon.Inbox" title="No reports yet" message="New reports from students will show up here." />
+        </section>
+      </aside>
+    </div>
+  </div>
+</template>

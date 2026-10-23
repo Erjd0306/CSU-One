@@ -1,0 +1,18 @@
+/* Student Home */
+.student-home { @apply space-y-6; }
+.student-home__report { @apply flex-[3] sm:flex-none; }
+.student-home__tour { @apply flex-[2] px-3 sm:flex-none sm:px-4; }
+.student-home__more { @apply inline-flex items-center gap-1 text-sm; }
+
+.student-home__layout { @apply grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]; }
+.student-home__main,
+.student-home__side { @apply space-y-6; }
+.student-home__list { @apply divide-y; }
+
+.student-home__safety { @apply p-4 sm:p-5; }
+.student-home__safety-title { @apply flex items-center gap-2 text-base font-semibold text-slate-900; }
+.student-home__safety-icon { @apply text-amber-700; }
+.student-home__safety-text { @apply mt-2 text-sm leading-relaxed text-slate-600; }
+
+.student-home__map { @apply space-y-3 p-4; }
+.student-home__map-canvas { @apply h-56; }

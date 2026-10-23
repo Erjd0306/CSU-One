@@ -1,0 +1,108 @@
+<!-- Admin Reports: search, filters with removable chips, card list on phones and table on desktop. -->
+<template data-component="AdminReportsView" data-from="./ReportsManagement"
+          data-props="filters set sort setSort sortOptions statusOptions priorityOptions categoryOptions areaOptions datePreset datePresets applyPreset showFilters toggleFilters activeCount chips clearAll visible total open rows openId closeDrawer"
+          data-imports="ReportDrawer:./ReportDrawer">
+  <div class="admin-reports">
+    <PageHeader title="Reports" description="Search, filter, and manage every campus report." />
+
+    <section class="panel" aria-label="Reports list">
+      <div class="admin-reports__toolbar">
+        <div class="admin-reports__search-row">
+          <SearchInput className="admin-reports__search" label="Search reports" placeholder="Search by report ID, student, title, or location"
+                       :value="filters.query" @change="(e) => set('query', e.target.value)" />
+          <div class="admin-reports__search-actions">
+            <button type="button" class="btn-secondary admin-reports__filters-toggle" :class="activeCount ? 'is-active' : ''"
+                    @click="toggleFilters" :aria-expanded="showFilters" aria-controls="report-filters">
+              <Icon.SlidersHorizontal :size="16" aria-hidden />Filters{{ activeCount ? ` (${activeCount})` : '' }}
+            </button>
+            <div class="admin-reports__sort">
+              <AppSelect ariaLabel="Sort reports" prefix="Sort:" :value="sort" :options="sortOptions" :onChange="setSort" />
+            </div>
+          </div>
+        </div>
+
+        <div id="report-filters" class="admin-reports__filters" :class="showFilters ? 'is-open' : ''">
+          <AppSelect ariaLabel="Status" :value="filters.status" :options="statusOptions" :onChange="(v) => set('status', v)" />
+          <AppSelect ariaLabel="Priority" :value="filters.priority" :options="priorityOptions" :onChange="(v) => set('priority', v)" />
+          <AppSelect ariaLabel="Category" :value="filters.category" :options="categoryOptions" :onChange="(v) => set('category', v)" />
+          <SearchableCombobox id="filter-area" ariaLabel="Campus area" :value="filters.buildingId === 'All' ? null : filters.buildingId"
+                              :options="areaOptions" :onChange="(v) => set('buildingId', v ?? 'All')" placeholder="All campus areas"
+                              :icon="Icon.MapPin" emptyMessage="No matching campus location found."
+                              :resultsLabel="(n) => `${n} campus location${n === 1 ? '' : 's'} found`" clearLabel="Show all campus areas" />
+          <AppSelect ariaLabel="Date submitted" :value="datePreset" :options="datePresets" :onChange="applyPreset" />
+          <div data-if="datePreset === 'custom'" class="admin-reports__dates">
+            <label class="admin-reports__date">
+              <span class="admin-reports__date-label">From</span>
+              <input type="date" class="field" :value="filters.from" :max="filters.to || undefined" @change="(e) => set('from', e.target.value)" />
+            </label>
+            <label class="admin-reports__date">
+              <span class="admin-reports__date-label">Until</span>
+              <input type="date" class="field" :value="filters.to" :min="filters.from || undefined" @change="(e) => set('to', e.target.value)" />
+            </label>
+          </div>
+        </div>
+
+        <ul data-if="chips.length" class="admin-reports__chips" aria-label="Active filters">
+          <li data-for="c in chips" :key="c.key">
+            <button type="button" @click="c.clear" class="chip admin-reports__chip" aria-label="Remove filter {{ c.label }}">
+              <span class="admin-reports__chip-label">{{ c.label }}</span><Icon.X :size="13" aria-hidden class="admin-reports__chip-x" />
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="admin-reports__summary">
+        <p class="admin-reports__count" aria-live="polite">{{ visible.length }} of {{ total }} reports</p>
+        <button data-if="activeCount > 0 || filters.query" type="button" class="btn-ghost btn-sm admin-reports__clear" @click="clearAll">
+          <Icon.X :size="14" aria-hidden />Clear filters
+        </button>
+      </div>
+
+      <EmptyState data-if="visible.length === 0" :icon="total ? undefined : Icon.Inbox" :title="total ? 'No reports match' : 'No reports yet'" :message="total ? 'Try a different search or clear some filters.' : 'Reports from students will appear here.'" />
+      <template data-else>
+        <!-- Cards on small screens -->
+        <ul class="admin-reports__cards">
+          <li data-for="row in rows" :key="row.report.id">
+            <ReportCard :report="row.report" :onSelect="open" showFlags :meta="row.assignee ?? 'Unassigned'" />
+          </li>
+        </ul>
+        <!-- Table on large screens -->
+        <div class="admin-reports__table-wrap">
+          <table class="admin-reports__table">
+            <thead>
+              <tr>
+                <th scope="col" class="admin-reports__col-report">Report</th>
+                <th scope="col" class="admin-reports__col-location">Location</th>
+                <th scope="col" class="admin-reports__col-reporter">Reporter</th>
+                <th scope="col" class="admin-reports__col-priority">Priority</th>
+                <th scope="col" class="admin-reports__col-status">Status</th>
+                <th scope="col" class="admin-reports__col-assignee">Assigned to</th>
+                <th scope="col" class="admin-reports__col-open"><span class="sr-only">Open</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-for="row in rows" :key="row.report.id" @click="() => open(row.report)" class="admin-reports__row">
+                <td class="admin-reports__cell-report">
+                  <button type="button" @click="(e) => { e.stopPropagation(); open(row.report) }" class="admin-reports__title focusable">{{ row.report.title }}</button>
+                  <p class="admin-reports__sub">{{ row.report.id }} · {{ row.report.category }} · {{ row.submitted }}</p>
+                </td>
+                <td class="admin-reports__cell-muted"><span class="admin-reports__clamp">{{ row.location }}</span></td>
+                <td class="admin-reports__cell-muted admin-reports__truncate">{{ row.report.reporterName }}</td>
+                <td class="admin-reports__cell"><PriorityBadge :priority="row.report.priority" /></td>
+                <td class="admin-reports__cell"><StatusBadge :status="row.report.status" /></td>
+                <td class="admin-reports__cell-muted">
+                  <span data-if="row.assignee" class="admin-reports__assignee">{{ row.assignee }}</span>
+                  <span data-else class="admin-reports__assignee admin-reports__unassigned">Unassigned</span>
+                  <span class="admin-reports__updated">{{ row.updated }}</span>
+                </td>
+                <td class="admin-reports__cell-chevron"><Icon.ChevronRight :size="16" aria-hidden /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </template>
+    </section>
+
+    <ReportDrawer data-if="openId" :reportId="openId" :onClose="closeDrawer" />
+  </div>
+</template>

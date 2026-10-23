@@ -1,0 +1,89 @@
+﻿/* Landing page: one calm, centered column that fits a phone screen and works the same on desktop. */
+.landing {
+  @apply relative isolate flex min-h-[100dvh] flex-col overflow-hidden bg-slate-50;
+  padding-top: var(--sat);
+  padding-left: max(1.25rem, var(--sal));
+  padding-right: max(1.25rem, var(--sar));
+}
+/* Soft crimson light behind the logo, fading into the page */
+.landing__glow {
+  @apply pointer-events-none absolute inset-x-0 top-0 -z-10 h-[26rem];
+  background:
+    radial-gradient(60% 55% at 50% 18%, rgb(195 34 58 / 0.16), transparent 70%),
+    radial-gradient(40% 40% at 85% 0%, rgb(36 59 83 / 0.10), transparent 70%);
+}
+.landing__main { @apply mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-6; }
+
+/* Brand */
+.landing__brand { @apply flex flex-col items-center text-center; }
+.landing__logo { @apply rounded-[28px]; filter: drop-shadow(0 10px 18px rgb(143 19 36 / 0.25)); animation: landing-float 6s ease-in-out 1.2s infinite; }
+.landing__title { @apply mt-4 text-[2rem] font-bold leading-none tracking-tight text-navy-900; }
+.landing__title-dash { @apply text-brand-600; }
+.landing__tagline { @apply mt-3 text-[15px] font-medium leading-snug text-slate-600; }
+
+/* How it works */
+.landing__card { @apply mt-7 rounded-2xl border border-white bg-white/80 p-4 shadow-[0_8px_30px_rgb(15_23_42/0.06)] backdrop-blur; }
+.landing__steps { @apply relative grid grid-cols-3 gap-2; }
+/* Dashed line joining the three icons */
+.landing__steps::before { content: ''; @apply absolute left-[16.6%] right-[16.6%] top-5 -z-10 border-t-2 border-dashed border-slate-200; }
+.landing__step { @apply flex flex-col items-center text-center; }
+.landing__step-icon { @apply grid h-10 w-10 place-items-center rounded-xl bg-brand-50 text-brand-700 ring-4 ring-white; }
+.landing__step-title { @apply mt-2 text-[13px] font-semibold text-slate-900; }
+.landing__step-help { @apply text-[11px] leading-tight text-slate-500; }
+
+/* Status track: the four stops light up in order once, then stay lit */
+.landing__track { @apply mt-4 border-t border-slate-100 pt-3.5; }
+.landing__track-label { @apply text-center text-[11px] font-medium uppercase tracking-wider text-slate-400; }
+.landing__track-line { @apply relative mt-3 grid grid-cols-4; }
+.landing__track-line::before { content: ''; @apply absolute left-[12.5%] right-[12.5%] top-[5px] h-0.5 rounded-full bg-slate-200; }
+.landing__track-line::after {
+  content: ''; @apply absolute left-[12.5%] top-[5px] h-0.5 rounded-full;
+  width: 75%;
+  background: linear-gradient(90deg, #c81e3a, #243b53, #d97706, #15803d);
+  transform-origin: left; animation: landing-fill 1.8s ease-in-out 0.7s both;
+}
+.landing__track-stop { @apply relative z-10 flex flex-col items-center gap-1.5 text-[11px] font-medium text-slate-600; }
+.landing__track-dot { @apply grid h-3 w-3 place-items-center rounded-full text-white ring-[3px] ring-white; animation: landing-pop 0.35s ease-out both; }
+.landing__track-stop.is-open .landing__track-dot { background: #c81e3a; animation-delay: 0.7s; }
+.landing__track-stop.is-assigned .landing__track-dot { background: #243b53; animation-delay: 1.25s; }
+.landing__track-stop.is-progress .landing__track-dot { background: #d97706; animation-delay: 1.85s; }
+.landing__track-stop.is-resolved .landing__track-dot { @apply h-4 w-4 -mt-0.5 -mb-0.5; background: #15803d; animation-delay: 2.45s; }
+
+/* Actions */
+.landing__actions { @apply mt-6 grid gap-2.5; }
+.landing__cta { @apply min-h-12 w-full text-[15px] shadow-[0_6px_16px_rgb(143_19_36/0.25)]; }
+.landing__secondary { @apply min-h-12 w-full text-[15px]; }
+
+.landing__footer {
+  @apply pt-2 text-center text-xs text-slate-500;
+  padding-bottom: calc(0.75rem + var(--sab));
+}
+
+/* Entrance: brand, card and buttons rise in one after another */
+.landing__rise { animation: landing-rise 0.5s ease-out both; }
+.landing__card.landing__rise { animation-delay: 0.12s; }
+.landing__actions.landing__rise { animation-delay: 0.24s; }
+
+@keyframes landing-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes landing-fill { from { transform: scaleX(0); } }
+@keyframes landing-pop { from { transform: scale(0); background: #cbd5e1; } 70% { transform: scale(1.25); } }
+@keyframes landing-float { 50% { transform: translateY(-4px); } }
+
+/* Short phones (e.g. 375×667, 320×568): tighten spacing so everything fits without scrolling */
+@media (max-height: 720px) {
+  .landing__main { @apply py-2; }
+  .landing__logo :where(img) { width: 88px !important; height: 88px !important; margin: -11px !important; }
+  .landing__title { @apply mt-3 text-[1.75rem]; }
+  .landing__tagline { @apply mt-2; }
+  .landing__card { @apply mt-4 p-3.5; }
+  .landing__track { @apply mt-3 pt-3; }
+  .landing__track-label { @apply hidden; }
+  .landing__track-line { @apply mt-0; }
+  .landing__actions { @apply mt-4; }
+  .landing__cta, .landing__secondary { @apply min-h-11; }
+}
+@media (max-height: 620px) {
+  .landing__step-help { @apply hidden; }
+  .landing__card { @apply mt-3 p-3; }
+  .landing__actions { @apply mt-3 gap-2; }
+}

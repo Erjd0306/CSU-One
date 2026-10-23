@@ -1,0 +1,60 @@
+<!-- Admin report drawer: evidence, assignment, workflow actions, history and internal notes. -->
+<template data-component="AdminReportDrawerView" data-from="./ReportDrawer"
+          data-props="reportId report onClose copy openAction closeAction runAction actionText setActionText confirmDisabled actionTone note setNote noteError saveNote describe"
+          data-imports="AssignControl:./AssignControl">
+  <Modal data-if="!report" title="Report not found" :onClose="onClose" size="sm">
+    <p class="report-drawer__missing">Report {{ reportId }} was not found. It may have been deleted when the data was reset.</p>
+  </Modal>
+
+  <Modal data-else title="Report details" description="{{ report.id }} · Submitted by {{ report.reporterName }}" :onClose="onClose" variant="drawer">
+    <template data-slot="footer">
+      <div class="report-drawer__footer">
+        <button type="button" class="btn-secondary" @click="() => openAction('info')" :disabled="report.status === 'Resolved'">
+          <Icon.MessageCircleQuestion :size="16" aria-hidden />Request info
+        </button>
+        <button data-if="report.status === 'Resolved'" type="button" class="btn-danger" @click="() => openAction('reopen')"><Icon.RotateCcw :size="16" aria-hidden />Reopen</button>
+        <button data-else type="button" class="btn-primary" @click="() => openAction('resolve')"><Icon.CircleCheck :size="16" aria-hidden />Resolve</button>
+      </div>
+    </template>
+
+    <div class="report-drawer__body">
+      <ReportHeading :report="report" />
+      <MilestoneTracker :report="report" />
+      <ReportFlags :report="report" />
+
+      <DetailSection :title="report.assigneeId ? 'Assignment' : 'Assign to maintenance'">
+        <AssignControl :report="report" />
+      </DetailSection>
+      <DetailSection title="Description"><p class="report-drawer__description">{{ report.description }}</p></DetailSection>
+      <DetailSection title="Photo evidence">
+        <div class="report-drawer__photos">
+          <PhotoEvidence :src="report.photo" alt="Photo of {{ report.title }} from the student" />
+          <PhotoEvidence data-if="report.completionPhoto" :src="report.completionPhoto" alt="Completion photo for {{ report.title }}" />
+        </div>
+      </DetailSection>
+      <DetailSection title="Reporter and details"><ReportFacts :report="report" /></DetailSection>
+      <DetailSection title="Map location"><ReportLocation :report="report" /></DetailSection>
+      <DetailSection title="Status history"><ReportTimeline :report="report" /></DetailSection>
+      <DetailSection title="Internal notes">
+        <InternalNotes :report="report" />
+        <div class="report-drawer__note">
+          <Field id="admin-note" label="Add a note" :error="noteError" hint="Only administrators and maintenance can see notes.">
+            <textarea id="admin-note" :rows="2" class="field" :class="noteError ? 'field-invalid' : ''" :value="note"
+                      @change="(e) => setNote(e.target.value)" :aria-invalid="!!noteError"
+                      :aria-describedby="describe('admin-note', noteError, 'hint')" :maxlength="400"></textarea>
+          </Field>
+          <div class="report-drawer__note-actions">
+            <button type="button" class="btn-secondary btn-sm" @click="saveNote"><Icon.Send :size="14" aria-hidden />Add note</button>
+          </div>
+        </div>
+      </DetailSection>
+    </div>
+
+    <ConfirmDialog data-if="copy" :title="copy.title" :message="copy.message" :confirmLabel="copy.label" :tone="actionTone"
+                   :confirmDisabled="confirmDisabled" :onCancel="closeAction" :onConfirm="runAction">
+      <Field id="action-text" :label="copy.field" :required="copy.required">
+        <textarea id="action-text" :rows="3" class="field" :value="actionText" @change="(e) => setActionText(e.target.value)" :maxlength="300"></textarea>
+      </Field>
+    </ConfirmDialog>
+  </Modal>
+</template>

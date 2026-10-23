@@ -1,0 +1,9 @@
+/* Admin Analytics */
+.admin-analytics,
+.admin-analytics__body { @apply space-y-6; }
+.admin-analytics__grid { @apply grid grid-cols-1 gap-6 lg:grid-cols-2; }
+.admin-analytics__activity { @apply divide-y; }
+.admin-analytics__activity-link { @apply block px-4 py-3 hover:bg-slate-50 active:bg-slate-100 sm:px-5; }
+.admin-analytics__activity-title { @apply text-sm text-slate-800; }
+.admin-analytics__activity-label { @apply font-medium; }
+.admin-analytics__activity-meta { @apply mt-0.5 truncate text-xs text-slate-500; }

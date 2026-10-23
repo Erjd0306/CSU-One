@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { @apply border-slate-200; }
+  html { @apply bg-slate-50 antialiased; -webkit-text-size-adjust: 100%; }
+  body { @apply m-0 min-w-[320px] bg-slate-50 text-slate-800; }
+  button, input, select, textarea { font: inherit; }
+  button { -webkit-tap-highlight-color: transparent; }
+  a { -webkit-tap-highlight-color: transparent; }
+  dialog::backdrop { background: rgb(2 6 23 / 0.45); }
+}
+
+@layer components {
+  .focusable { @apply outline-none focus-visible:ring-2 focus-visible:ring-brand-600 focus-visible:ring-offset-2; }
+
+  /* Form fields */
+  .label { @apply mb-1.5 block text-sm font-medium text-slate-700; }
+  .hint { @apply mt-1.5 text-xs text-slate-500; }
+  .error-text { @apply mt-1.5 flex items-center gap-1 text-xs font-medium text-rose-700; }
+  /* Inputs and selects share one look: slate border, crimson border + soft ring on focus/open. */
+  .field { @apply h-11 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-800 outline-none transition duration-150 placeholder:text-slate-400 hover:border-slate-400 focus:border-brand-600 focus:ring-4 focus:ring-brand-100 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-500; }
+  .field[data-open] { @apply border-brand-600 ring-4 ring-brand-100; }
+  .field-invalid { @apply border-rose-500 hover:border-rose-600 focus:border-rose-600 focus:ring-rose-100; }
+  textarea.field { @apply h-auto py-2.5 leading-relaxed; }
+  .select-field { @apply flex min-h-11 cursor-pointer items-center gap-2 text-left; }
+
+  /* Surfaces */
+  .panel { @apply rounded-lg border bg-white; }
+  .panel-header { @apply flex items-center justify-between gap-3 border-b px-4 py-3 sm:px-5; }
+  .panel-title { @apply text-base font-semibold text-slate-900; }
+  .section-title { @apply text-lg font-semibold tracking-tight text-slate-900; }
+
+  /* Navigation */
+  .nav-item { @apply focusable flex min-h-11 items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition duration-150 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200; }
+  .nav-item-active { @apply bg-brand-50 text-brand-700 hover:bg-brand-50 hover:text-brand-700; }
+
+  /* Buttons */
+  .btn { @apply focusable inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition duration-150 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-primary { @apply btn bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900; }
+  .btn-secondary { @apply btn border bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100; }
+  .btn-ghost { @apply btn px-3 text-slate-600 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200; }
+  .btn-danger { @apply btn border border-rose-200 bg-white text-rose-700 hover:border-rose-300 hover:bg-rose-50 active:bg-rose-100; }
+  .btn-danger-solid { @apply btn bg-rose-700 text-white hover:bg-rose-800 active:bg-rose-900; }
+  .btn-sm { @apply min-h-9 px-3 text-xs; }
+  .icon-btn { @apply focusable inline-grid h-11 w-11 shrink-0 place-items-center rounded-lg text-slate-500 transition duration-150 hover:bg-slate-100 hover:text-slate-800 active:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50; }
+  .link { @apply focusable rounded-sm font-semibold text-brand-700 underline-offset-2 hover:text-brand-800 hover:underline; }
+
+  /* Chips */
+  .chip { @apply focusable inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-md border bg-white px-3 text-xs font-medium text-slate-600 transition duration-150 hover:border-slate-300 hover:bg-slate-50 active:bg-slate-100; }
+  .chip-active { @apply border-brand-700 bg-brand-50 text-brand-700 hover:border-brand-700 hover:bg-brand-50; }
+
+  .skeleton { @apply animate-pulse rounded-md bg-slate-200; }
+}
+
+/*
+ * Safe areas (notch, status bar, gesture bar, rounded corners). Browsers report them
+ * through env(); the Capacitor Android WebView also sets --safe-area-inset-* variables.
+ */
+:root {
+  --sat: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  --sar: max(env(safe-area-inset-right, 0px), var(--safe-area-inset-right, 0px));
+  --sab: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  --sal: max(env(safe-area-inset-left, 0px), var(--safe-area-inset-left, 0px));
+}
+.safe-x { padding-left: var(--sal); padding-right: var(--sar); }
+.safe-top { padding-top: var(--sat); }
+.safe-bottom { padding-bottom: var(--sab); }
+.safe-left { padding-left: var(--sal); }
+.pb-bottom-nav { padding-bottom: calc(5.5rem + var(--sab)); }
+@media (min-width: 768px) { .pb-bottom-nav { padding-bottom: 2rem; } }
+.bottom-nav { padding-bottom: var(--sab); padding-left: var(--sal); padding-right: var(--sar); }
+.sheet-footer { padding-bottom: calc(0.75rem + var(--sab)); }
+.sheet-pad { padding-bottom: calc(1.25rem + var(--sab)); }
+@media (min-width: 640px) { .sheet-pad { padding-bottom: 1.5rem; } }
+@media (max-width: 639px) {
+  dialog.csu-modal:is([data-variant="dialog"], [data-variant="drawer"]) .csu-modal__header { padding-top: calc(0.75rem + var(--sat)); }
+  /* Sheets and full-screen dialogs without a footer: keep the last item above the gesture bar */
+  dialog.csu-modal .csu-modal__body-last { padding-bottom: calc(1rem + var(--sab)); }
+}
+
+/* Swipe between main pages on phones: a short slide in from the swipe direction */
+#main[data-swipe="next"] { animation: csu-swipe-next 200ms ease-out; }
+#main[data-swipe="prev"] { animation: csu-swipe-prev 200ms ease-out; }
+@keyframes csu-swipe-next { from { opacity: 0.4; transform: translateX(24px); } }
+@keyframes csu-swipe-prev { from { opacity: 0.4; transform: translateX(-24px); } }
+
+/* Modals: soft shadow, short fade + scale (180ms in, 150ms out). Reduced motion is handled below. */
+dialog.csu-modal { box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.08); }
+dialog.csu-modal[open] { animation: csu-pop 180ms ease-out; }
+dialog.csu-modal[open]::backdrop { animation: csu-fade 180ms ease-out; }
+dialog.csu-modal[data-variant="sheet"][open] { animation-name: csu-rise; }
+dialog.csu-modal[data-variant="drawer"][open] { animation-name: csu-fade; }
+@media (min-width: 640px) {
+  dialog.csu-modal[data-variant="sheet"][open] { animation-name: csu-pop; }
+  dialog.csu-modal[data-variant="drawer"][open] { animation-name: csu-slide; }
+}
+dialog.csu-modal[data-closing] { animation: csu-out 150ms ease-in forwards; }
+dialog.csu-modal[data-closing]::backdrop { animation: csu-fade-out 150ms ease-in forwards; }
+@keyframes csu-fade { from { opacity: 0; } }
+@keyframes csu-fade-out { to { opacity: 0; } }
+@keyframes csu-pop { from { opacity: 0; transform: scale(0.96); } }
+@keyframes csu-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes csu-slide { from { opacity: 0; transform: translateX(24px); } }
+@keyframes csu-out { to { opacity: 0; transform: scale(0.97); } }
+
+/* Login ↔ new-user: a short fade-up, like moving between screens of a mobile app */
+.auth-enter { animation: csu-auth-in 200ms ease-out; }
+@keyframes csu-auth-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* Profile dropdown */
+.menu-enter { animation: csu-menu-in 150ms ease-out; transform-origin: top right; }
+@keyframes csu-menu-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+.toast-offset { bottom: calc(5.5rem + var(--sab)); }
+@media (min-width: 768px) { .toast-offset { bottom: 1.5rem; } }
+
+/* Leaflet integration */
+.leaflet-container { font-family: inherit; background: #e8ecef; z-index: 0; }
+.leaflet-container :focus-visible { outline: 2px solid #a8142c; outline-offset: 2px; }
+.leaflet-control-zoom a { width: 36px !important; height: 36px !important; line-height: 36px !important; color: #1e293b !important; }
+.leaflet-popup-content-wrapper { border-radius: 8px; box-shadow: 0 4px 14px rgba(15,23,42,.15); }
+.leaflet-popup-content { margin: 12px 14px; font-size: 13px; line-height: 1.45; }
+
+.map-pin { position: relative; width: 28px; height: 36px; }
+.map-pin-head { position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(15,23,42,.35); }
+.map-pin-glyph { position: absolute; left: 0; top: 0; width: 28px; height: 28px; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 700; }
+.map-pin-selected .map-pin-head { box-shadow: 0 0 0 3px rgba(168,20,44,.35), 0 1px 3px rgba(15,23,42,.35); }
+
+.campus-label { position: relative; display: flex; align-items: center; gap: 6px; white-space: nowrap; background: #102a43; color: #fff; font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 6px; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(15,23,42,.35); transform: translate(-50%, -100%); width: max-content; }
+.campus-label::after { content: ''; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #102a43; }
+
+/* Building names from OpenStreetMap, centred on each building */
+.place-dot { display: block; width: 10px; height: 10px; transform: translate(-50%, -50%); border-radius: 50%; background: #102a43; border: 2px solid #fff; box-shadow: 0 1px 2px rgba(15,23,42,.35); pointer-events: none; }
+.place-label { display: block; width: max-content; max-width: 9rem; transform: translate(-50%, -50%); padding: 2px 6px; border-radius: 4px; background: rgb(255 255 255 / 0.88); color: #102a43; font-size: 11px; font-weight: 600; line-height: 1.3; text-align: center; box-shadow: 0 1px 2px rgba(15,23,42,.25); pointer-events: none; }
+
+/* Leaflet in dark mode: dimmed tiles and dark controls, not an inverted map */
+.dark .leaflet-container { background: #1a2231; }
+.dark .leaflet-tile-pane { filter: brightness(0.72) contrast(1.08) saturate(0.85); }
+.dark .leaflet-bar a, .dark .leaflet-bar a:hover { background: #1a2231; color: #d8e0ea !important; border-color: #2a3445; }
+.dark .leaflet-bar { border-color: #2a3445; }
+.dark .leaflet-popup-content-wrapper, .dark .leaflet-popup-tip { background: #161d2a; color: #d8e0ea; }
+.dark .leaflet-container a.leaflet-popup-close-button { color: #94a3b8; }
+.dark .leaflet-control-attribution { background: rgb(22 29 42 / 0.8); color: #94a3b8; }
+.dark .leaflet-control-attribution a { color: #c5cfdc; }
+.dark .place-label { background: rgb(22 29 42 / 0.88); color: #e4e9f0; box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.dark .campus-label { border-color: #d8e0ea; }
+.dark .place-dot { background: #9db6d2; border-color: #161d2a; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}

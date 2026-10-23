@@ -1,0 +1,15 @@
+/* Student tutorial */
+.tutorial { @apply space-y-4; }
+.tutorial__cue { @apply flex items-center gap-3 rounded-lg border bg-slate-50 px-3 py-2.5; }
+.tutorial__cue-icon { @apply grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-700; }
+.tutorial__cue-text { @apply text-sm font-medium text-slate-800; }
+
+.tutorial__progress { @apply flex items-center justify-between gap-3; }
+.tutorial__dots { @apply flex gap-1.5; }
+.tutorial__dot { @apply h-1.5 w-1.5 rounded-full bg-slate-300 transition-all; }
+.tutorial__dot.is-current { @apply w-5 bg-brand-700; }
+.tutorial__count { @apply text-xs text-slate-500; }
+
+.tutorial__footer { @apply flex items-center justify-between gap-2; }
+.tutorial__skip { @apply -ml-3; }
+.tutorial__nav { @apply flex gap-2; }

@@ -1,0 +1,199 @@
+<!-- Report an Issue: four steps (issue, location, details, review) and the confirmation screen. -->
+<template data-component="StudentReportIssueView" data-from="./ReportIssue"
+          data-props="submitted viewSubmitted reportAnother stage stages stageTitle goTo draft errors set describe categories priorities submitting submit location locationName pinLabel">
+
+  <!-- Confirmation after submitting -->
+  <div data-if="submitted" class="report-done">
+    <section class="panel report-done__panel" aria-live="polite">
+      <span class="report-done__icon"><Icon.CircleCheck :size="26" aria-hidden /></span>
+      <h1 class="report-done__title">Report submitted</h1>
+      <p class="report-done__text">Your report ID is <span class="report-done__id">{{ submitted.id }}</span>. We will notify you as it moves through each step.</p>
+      <ol class="report-done__steps">
+        <li class="report-done__step"><span class="report-done__step-number">1.</span>The Facilities Office reviews your report.</li>
+        <li class="report-done__step"><span class="report-done__step-number">2.</span>It is assigned to a maintenance team.</li>
+        <li class="report-done__step"><span class="report-done__step-number">3.</span>You are notified when it is repaired.</li>
+      </ol>
+      <div class="report-done__actions">
+        <button type="button" class="btn-primary" @click="viewSubmitted">View report</button>
+        <button type="button" class="btn-secondary" @click="reportAnother">Report another issue</button>
+      </div>
+    </section>
+  </div>
+
+  <div data-else class="report-issue">
+    <PageHeader title="Report an issue" description="Tell us what&apos;s broken and where. Fields with * are required." />
+
+    <ol class="report-issue__progress" aria-label="Report progress">
+      <li data-for="(label, i) in stages" :key="label">
+        <button type="button" class="report-issue__step focusable"
+                :class="i === stage ? 'is-current' : i < stage ? 'is-done' : ''"
+                @click="() => { if (i !== stage) goTo(i) }"
+                :aria-current="i === stage ? 'step' : undefined">
+          <span class="report-issue__step-bar"></span>
+          <span class="report-issue__step-label">
+            <Icon.Check data-if="i < stage" :size="12" aria-hidden />
+            <span class="report-issue__step-number">{{ i + 1 }}.</span> {{ label }}
+          </span>
+        </button>
+      </li>
+    </ol>
+
+    <section class="panel" aria-labelledby="stage-title">
+      <div class="panel-header">
+        <div>
+          <h2 id="stage-title" class="panel-title">{{ stageTitle }}</h2>
+          <p class="report-issue__step-count">Step {{ stage + 1 }} of {{ stages.length }}</p>
+        </div>
+      </div>
+
+      <div class="report-issue__body">
+        <!-- Step 1: issue -->
+        <template data-if="stage === 0">
+          <fieldset :aria-describedby="errors.category ? 'category-error' : undefined">
+            <legend class="label">Category<span class="report-issue__required" aria-hidden>*</span></legend>
+            <div class="report-issue__categories">
+              <label data-for="c in categories" :key="c.value" class="report-issue__choice"
+                     :class="`${draft.category === c.value ? 'is-selected' : ''} ${errors.category ? 'is-invalid' : ''}`">
+                <input type="radio" name="category" class="sr-only" :value="c.value" :checked="draft.category === c.value"
+                       @change="() => set('category', c.value)" :data-invalid="errors.category ? 'true' : undefined" />
+                <c.icon :size="18" class="report-issue__choice-icon" aria-hidden />
+                <span class="report-issue__choice-text">
+                  <span class="report-issue__choice-title">{{ c.value }}</span>
+                  <span class="report-issue__choice-help">{{ c.description }}</span>
+                </span>
+              </label>
+            </div>
+            <p data-if="errors.category" id="category-error" class="error-text">{{ errors.category }}</p>
+          </fieldset>
+
+          <Field id="title" label="Short title" required :error="errors.title" hint="For example: Broken chair in Room 204">
+            <input id="title" class="field" :class="errors.title ? 'field-invalid' : ''" :value="draft.title" :maxlength="80"
+                   @change="(e) => set('title', e.target.value)" :aria-invalid="!!errors.title"
+                   :aria-describedby="describe('title', errors.title, 'hint')" placeholder="What is the problem?" />
+          </Field>
+        </template>
+
+        <!-- Step 2: location -->
+        <template data-else-if="stage === 1">
+          <div>
+            <div class="report-issue__map-heading">
+              <p id="pin-label" class="report-issue__map-label">Pin the spot on the map<span data-if="!location.mapFailed" class="report-issue__required" aria-hidden>*</span></p>
+              <p data-if="!location.mapFailed" class="report-issue__map-help">Tap to drop a pin, then drag to adjust. Zoom in for building names.</p>
+            </div>
+            <div class="report-issue__map-frame" :class="errors.pin ? 'is-invalid' : ''"
+                 :data-invalid="errors.pin ? 'true' : undefined" :tabindex="errors.pin ? -1 : undefined"
+                 :aria-describedby="errors.pin ? 'pin-error' : undefined">
+              <CampusMap label="Choose the report location on the CSU Carig map" :pick="draft.pin" :onPick="location.pick"
+                         :focusKey="location.focusKey" :onLoadFailed="location.onMapFailed" className="report-issue__map-canvas" />
+            </div>
+            <p data-if="errors.pin" id="pin-error" class="error-text">{{ errors.pin }}</p>
+            <p data-else-if="pinLabel" class="report-issue__pinned"><Icon.MapPin :size="13" class="report-issue__pinned-icon" aria-hidden />{{ pinLabel }}</p>
+            <p data-else-if="location.mapFailed" class="report-issue__pinned">The map is unavailable, so the building's mapped location will be used.</p>
+          </div>
+
+          <div>
+            <Field id="building" label="Building or area" required :error="errors.buildingId" :hint="location.hint">
+              <SearchableCombobox id="building" :value="draft.buildingId || null" :options="location.options" :onChange="location.chooseBuilding"
+                                  placeholder="Search for a building or area" :icon="Icon.Search" :error="!!errors.buildingId"
+                                  :describedBy="describe('building', errors.buildingId, location.hint)"
+                                  emptyMessage="No matching place found."
+                                  :emptyAction="location.emptyAction"
+                                  :resultsLabel="(n) => `${n} place${n === 1 ? '' : 's'} found`"
+                                  clearLabel="Clear building or area" />
+            </Field>
+            <div data-if="location.suggestionName" role="status" class="report-issue__suggestion">
+              <p>Your pin is closest to <span class="report-issue__suggestion-name">{{ location.suggestionName }}</span>.</p>
+              <div class="report-issue__suggestion-actions">
+                <button type="button" class="btn-secondary btn-sm" @click="location.keepCurrent">Keep current</button>
+                <button type="button" class="btn-primary btn-sm" @click="location.useSuggestion">Use this place</button>
+              </div>
+            </div>
+          </div>
+
+          <Field id="detail" label="Room, floor, or landmark" hint="Optional, but it helps the team find it.">
+            <input id="detail" class="field" :value="draft.locationDetail" :maxlength="80" @change="(e) => set('locationDetail', e.target.value)"
+                   placeholder="e.g. Room 204, 2nd floor" aria-describedby="detail-hint" />
+          </Field>
+        </template>
+
+        <!-- Step 3: details -->
+        <template data-else-if="stage === 2">
+          <Field id="description" label="Description" required :error="errors.description"
+                 hint="{{ draft.description.length }}/500 characters. Include what you saw and any safety risk.">
+            <textarea id="description" :rows="5" :maxlength="500" class="field report-issue__description" :class="errors.description ? 'field-invalid' : ''"
+                      :value="draft.description" @change="(e) => set('description', e.target.value)" :aria-invalid="!!errors.description"
+                      :aria-describedby="describe('description', errors.description, 'hint')" placeholder="What happened? When did you notice it?"></textarea>
+          </Field>
+
+          <PhotoPicker id="photo" :value="draft.photo" :onChange="(v) => set('photo', v)" label="Photo (optional)" />
+
+          <fieldset :aria-describedby="errors.priority ? 'priority-error' : undefined">
+            <legend class="label">Priority<span class="report-issue__required" aria-hidden>*</span></legend>
+            <div class="report-issue__priorities">
+              <label data-for="p in priorities" :key="p.value" class="report-issue__choice report-issue__choice--priority"
+                     :class="`${draft.priority === p.value ? 'is-selected' : ''} ${errors.priority ? 'is-invalid' : ''}`">
+                <input type="radio" name="priority" class="report-issue__radio" :value="p.value" :checked="draft.priority === p.value"
+                       @change="() => set('priority', p.value)" :data-invalid="errors.priority ? 'true' : undefined" />
+                <span>
+                  <span class="report-issue__priority-title">{{ p.value }}</span>
+                  <span class="report-issue__priority-help">{{ p.help }}</span>
+                </span>
+              </label>
+            </div>
+            <p data-if="errors.priority" id="priority-error" class="error-text">{{ errors.priority }}</p>
+          </fieldset>
+        </template>
+
+        <!-- Step 4: review -->
+        <template data-else>
+          <dl class="report-issue__review">
+            <div class="report-issue__review-row">
+              <div class="report-issue__review-pair"><dt>Category</dt><dd>{{ draft.category }}</dd></div>
+              <button type="button" class="btn-ghost btn-sm report-issue__edit" @click="() => goTo(0)" aria-label="Edit category"><Icon.Pencil :size="13" aria-hidden />Edit</button>
+            </div>
+            <div class="report-issue__review-row">
+              <div class="report-issue__review-pair"><dt>Title</dt><dd>{{ draft.title }}</dd></div>
+              <button type="button" class="btn-ghost btn-sm report-issue__edit" @click="() => goTo(0)" aria-label="Edit title"><Icon.Pencil :size="13" aria-hidden />Edit</button>
+            </div>
+            <div class="report-issue__review-row">
+              <div class="report-issue__review-pair">
+                <dt>Location</dt>
+                <dd>{{ locationName }}<span class="report-issue__review-sub">{{ pinLabel || 'Building location' }}</span></dd>
+              </div>
+              <button type="button" class="btn-ghost btn-sm report-issue__edit" @click="() => goTo(1)" aria-label="Edit location"><Icon.Pencil :size="13" aria-hidden />Edit</button>
+            </div>
+            <div class="report-issue__review-row">
+              <div class="report-issue__review-pair"><dt>Description</dt><dd class="report-issue__review-description">{{ draft.description }}</dd></div>
+              <button type="button" class="btn-ghost btn-sm report-issue__edit" @click="() => goTo(2)" aria-label="Edit description"><Icon.Pencil :size="13" aria-hidden />Edit</button>
+            </div>
+            <div class="report-issue__review-row">
+              <div class="report-issue__review-pair">
+                <dt>Priority</dt>
+                <dd><PriorityBadge data-if="draft.priority" :priority="draft.priority" /><template data-else>—</template></dd>
+              </div>
+              <button type="button" class="btn-ghost btn-sm report-issue__edit" @click="() => goTo(2)" aria-label="Edit priority"><Icon.Pencil :size="13" aria-hidden />Edit</button>
+            </div>
+          </dl>
+          <div>
+            <p class="label">Photo</p>
+            <img data-if="draft.photo" :src="draft.photo" alt="Attached photo of the problem" class="report-issue__review-photo" />
+            <p data-else class="report-issue__muted">No photo attached.</p>
+          </div>
+          <p class="report-issue__notice">
+            By submitting, you confirm the information is accurate. The Campus Facilities Office will review your report and assign it to a maintenance team.
+          </p>
+        </template>
+      </div>
+
+      <div class="report-issue__footer">
+        <button data-if="stage > 0" type="button" class="btn-secondary" @click="() => goTo(stage - 1)" :disabled="submitting">
+          <Icon.ArrowLeft :size="17" aria-hidden />Back
+        </button>
+        <Link data-else to="/student" class="btn-ghost">Cancel</Link>
+
+        <button data-if="stage < 3" type="button" class="btn-primary" @click="() => goTo(stage + 1)">Continue<Icon.ArrowRight :size="17" aria-hidden /></button>
+        <PrimaryButton data-else :onClick="submit" :loading="submitting" loadingText="Submitting…" :icon="Icon.Send">Submit report</PrimaryButton>
+      </div>
+    </section>
+  </div>
+</template>

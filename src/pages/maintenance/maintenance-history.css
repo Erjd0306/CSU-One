@@ -1,0 +1,8 @@
+/* Maintenance Work History */
+.maintenance-history { @apply space-y-5; }
+.maintenance-history__filters { @apply grid gap-2 border-b p-4 sm:grid-cols-[minmax(0,1fr)_10rem_10rem]; }
+.maintenance-history__date { @apply block; }
+.maintenance-history__summary { @apply flex items-center justify-between gap-2 border-b px-4 py-2; }
+.maintenance-history__count { @apply text-xs text-slate-500; }
+.maintenance-history__clear { @apply -mr-2; }
+.maintenance-history__list { @apply divide-y; }

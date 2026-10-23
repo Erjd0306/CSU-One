@@ -1,0 +1,27 @@
+/* Admin Dashboard */
+.admin-dashboard { @apply space-y-6; }
+.admin-dashboard__manage { @apply w-full sm:w-auto; }
+.admin-dashboard__layout { @apply grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]; }
+.admin-dashboard__main,
+.admin-dashboard__side { @apply space-y-6; }
+
+.admin-dashboard__heading { @apply min-w-0; }
+.admin-dashboard__subtitle { @apply mt-0.5 text-xs text-slate-500; }
+.admin-dashboard__more { @apply inline-flex shrink-0 items-center gap-1 text-sm; }
+.admin-dashboard__link { @apply text-sm; }
+.admin-dashboard__list { @apply divide-y; }
+
+.admin-dashboard__map { @apply space-y-3 p-4; }
+.admin-dashboard__map-canvas { @apply h-72; }
+
+.admin-dashboard__team { @apply px-4 py-3 sm:px-5; }
+.admin-dashboard__team-row { @apply flex items-baseline justify-between gap-2 text-sm; }
+.admin-dashboard__team-name { @apply min-w-0 truncate font-medium text-slate-800; }
+.admin-dashboard__team-count { @apply shrink-0 text-xs tabular-nums text-slate-500; }
+.admin-dashboard__bar { @apply mt-1.5 h-1.5 rounded-r bg-slate-100; }
+.admin-dashboard__bar-fill { @apply h-full rounded-r bg-navy-700; }
+
+.admin-dashboard__recent { @apply flex items-start justify-between gap-3 px-4 py-3 hover:bg-slate-50 active:bg-slate-100 sm:px-5; }
+.admin-dashboard__recent-text { @apply min-w-0; }
+.admin-dashboard__recent-title { @apply block truncate text-sm font-medium text-slate-900; }
+.admin-dashboard__recent-meta { @apply mt-0.5 block text-xs text-slate-500; }

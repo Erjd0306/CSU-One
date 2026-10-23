@@ -1,0 +1,31 @@
+<!-- Maintenance Work History: completed tasks with search and a resolved-date range. -->
+<template data-component="MaintenanceHistoryView" data-from="./WorkHistory"
+          data-props="stats done visible query setQuery from setFrom to setTo filtered clearFilters resolvedLabel">
+  <div class="maintenance-history">
+    <PageHeader title="Work history" description="Tasks you have completed." />
+    <StatStrip :items="stats" />
+
+    <section class="panel" aria-label="Completed tasks">
+      <div class="maintenance-history__filters">
+        <SearchInput label="Search completed tasks" placeholder="Search by title, ID, or location" :value="query" @change="(e) => setQuery(e.target.value)" />
+        <label class="maintenance-history__date">
+          <span class="sr-only">Resolved from</span>
+          <input type="date" class="field" :value="from" :max="to || undefined" @change="(e) => setFrom(e.target.value)" aria-label="Resolved from" title="Resolved from" />
+        </label>
+        <label class="maintenance-history__date">
+          <span class="sr-only">Resolved until</span>
+          <input type="date" class="field" :value="to" :min="from || undefined" @change="(e) => setTo(e.target.value)" aria-label="Resolved until" title="Resolved until" />
+        </label>
+      </div>
+      <div class="maintenance-history__summary">
+        <p class="maintenance-history__count" aria-live="polite">{{ visible.length }} of {{ done.length }} completed</p>
+        <button data-if="filtered" type="button" class="btn-ghost btn-sm maintenance-history__clear" @click="clearFilters"><Icon.X :size="14" aria-hidden />Clear</button>
+      </div>
+      <ul data-if="visible.length" class="maintenance-history__list">
+        <li data-for="r in visible" :key="r.id"><ReportCard :report="r" to="/maintenance/tasks/{{ r.id }}" :meta="resolvedLabel(r)" /></li>
+      </ul>
+      <EmptyState data-else :icon="Icon.History" :title="done.length ? 'No tasks match' : 'No completed tasks yet'"
+                  :message="done.length ? 'Try a different search or date range.' : 'Tasks you resolve will be listed here.'" />
+    </section>
+  </div>
+</template>

@@ -1,0 +1,32 @@
+<!-- The next repair step (Accept → Start → Resolve) and the resolve confirmation. -->
+<template data-component="RepairActionsView" data-from="./RepairActions"
+          data-props="step accept start openResolve resolving closeResolve confirmResolve note setNote showPhotoPrompt addPhoto">
+  <p data-if="step === 'done'" class="repair-actions__done"><Icon.CircleCheck :size="16" aria-hidden />This repair has been completed.</p>
+
+  <template data-else>
+    <div class="repair-actions">
+      <p data-if="step === 'accept'" class="repair-actions__hint">Accept this task to confirm you will handle it.</p>
+      <p data-else-if="step === 'start'" class="repair-actions__hint">Task accepted. Start the repair when you are on site.</p>
+      <p data-else class="repair-actions__hint">Repair in progress. Mark it as resolved once the problem is fixed.</p>
+      <div class="repair-actions__action">
+        <button data-if="step === 'accept'" type="button" class="btn-primary repair-actions__button" @click="accept"><Icon.Hand :size="16" aria-hidden />Accept Task</button>
+        <button data-else-if="step === 'start'" type="button" class="btn-primary repair-actions__button" @click="start"><Icon.Wrench :size="16" aria-hidden />Start Repair</button>
+        <button data-else type="button" class="btn-primary repair-actions__button" @click="openResolve"><Icon.CircleCheck :size="16" aria-hidden />Mark as Resolved</button>
+      </div>
+    </div>
+
+    <ConfirmDialog data-if="resolving" title="Mark this task as resolved?"
+                   message="The student and the Facilities Office will be notified that the problem is fixed."
+                   confirmLabel="Mark as Resolved" :onCancel="closeResolve" :onConfirm="confirmResolve">
+      <div class="repair-actions__resolve">
+        <div data-if="showPhotoPrompt" class="repair-actions__photo-prompt">
+          No completion photo yet.
+          <button type="button" class="link repair-actions__photo-link" @click="addPhoto">Add photo</button>
+        </div>
+        <Field id="resolve-note" label="Completion note (optional)">
+          <textarea id="resolve-note" :rows="3" class="field" :value="note" @change="(e) => setNote(e.target.value)" :maxlength="300" placeholder="What was fixed?"></textarea>
+        </Field>
+      </div>
+    </ConfirmDialog>
+  </template>
+</template>

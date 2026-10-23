@@ -1,0 +1,10 @@
+/* Repair workflow action (Tasks page "Current task", Task Detail) */
+.repair-actions { @apply flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between; }
+.repair-actions__hint { @apply text-sm text-slate-600; }
+.repair-actions__action { @apply shrink-0; }
+.repair-actions__button { @apply w-full sm:w-auto; }
+.repair-actions__done { @apply flex items-center gap-2 text-sm font-medium text-emerald-800; }
+
+.repair-actions__resolve { @apply space-y-3; }
+.repair-actions__photo-prompt { @apply flex items-center justify-between gap-3 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-900; }
+.repair-actions__photo-link { @apply shrink-0 text-xs; }

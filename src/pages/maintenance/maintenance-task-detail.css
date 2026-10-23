@@ -1,0 +1,18 @@
+/* Maintenance task detail */
+.task-detail { @apply space-y-6; }
+.task-detail__back { @apply -ml-3; }
+.task-detail__layout { @apply grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]; }
+.task-detail__main { @apply space-y-5 p-4 sm:p-5; }
+
+.task-detail__progress { @apply border-t pt-5; }
+.task-detail__progress-title { @apply mb-3 text-sm font-semibold text-slate-900; }
+.task-detail__tools { @apply mt-4 grid grid-cols-1 gap-2 min-[400px]:grid-cols-3; }
+
+.task-detail__description { @apply whitespace-pre-line text-sm leading-relaxed text-slate-700; }
+.task-detail__photos { @apply grid gap-3 sm:grid-cols-2; }
+.task-detail__photo-label { @apply mb-1.5 text-xs text-slate-500; }
+
+.task-detail__timeline { @apply p-4 sm:p-5 lg:sticky lg:top-24; }
+.task-detail__timeline-title { @apply mb-4; }
+
+.task-detail__dialog-actions { @apply grid grid-cols-2 gap-3; }

@@ -1,0 +1,75 @@
+<!-- Admin Teams: personnel, availability, workload, unassigned reports and assignment. -->
+<template data-component="AdminTeamsView" data-from="./TeamsPage"
+          data-props="stats unassigned teams availabilityOptions openReport openId closeDrawer assignFor closeAssign"
+          data-imports="AssignControl:./AssignControl ReportDrawer:./ReportDrawer AssignToPersonModal:./TeamsPage">
+  <div class="admin-teams">
+    <PageHeader title="Maintenance teams" description="Staff, availability, and workload. Assign reports from here." />
+
+    <StatStrip :items="stats" />
+
+    <section data-if="unassigned.length" class="panel" aria-labelledby="unassigned">
+      <div class="panel-header">
+        <h2 id="unassigned" class="panel-title">Waiting for assignment</h2>
+        <span class="admin-teams__count">{{ unassigned.length }} open</span>
+      </div>
+      <ul class="admin-teams__list">
+        <li data-for="item in unassigned" :key="item.report.id" class="admin-teams__unassigned">
+          <button type="button" class="admin-teams__report focusable" @click="() => openReport(item.report.id)">
+            <span class="admin-teams__report-title-row">
+              <span class="admin-teams__report-title">{{ item.report.title }}</span>
+              <PriorityBadge :priority="item.report.priority" />
+            </span>
+            <span class="admin-teams__report-meta">{{ item.report.id }} · {{ item.report.category }} · {{ item.location }}</span>
+          </button>
+          <AssignControl :report="item.report" />
+        </li>
+      </ul>
+    </section>
+
+    <section data-for="team in teams" :key="team.id" class="panel" aria-labelledby="team-{{ team.id }}">
+      <div class="panel-header">
+        <div>
+          <h2 id="team-{{ team.id }}" class="panel-title">{{ team.name }}</h2>
+          <p class="admin-teams__focus">Handles {{ team.focus }}</p>
+        </div>
+      </div>
+      <p data-if="!team.members.length" class="admin-teams__empty">No staff in this team yet.</p>
+      <ul data-else class="admin-teams__list">
+        <li data-for="m in team.members" :key="m.person.id" class="admin-teams__person">
+          <div class="admin-teams__person-row">
+            <div class="admin-teams__identity">
+              <Avatar :initials="m.person.initials" />
+              <div class="admin-teams__identity-text">
+                <p class="admin-teams__name">{{ m.person.name }}</p>
+                <p class="admin-teams__position">
+                  {{ m.person.position }}
+                  <a :href="m.tel" class="admin-teams__phone focusable"><Icon.Phone :size="11" aria-hidden />{{ m.person.phone }}</a>
+                </p>
+              </div>
+            </div>
+            <div class="admin-teams__controls">
+              <AppSelect :ariaLabel="`Availability of ${m.person.name}`" :value="m.person.availability" :options="availabilityOptions" :onChange="m.setAvailability" />
+              <div class="admin-teams__workload">
+                <div class="admin-teams__workload-row"><span>Workload</span><span class="admin-teams__workload-count">{{ m.active }} active</span></div>
+                <div class="admin-teams__bar"><div class="admin-teams__bar-fill" :class="m.overloaded ? 'is-overloaded' : ''" :style="{ width: `${m.percent}%` }"></div></div>
+              </div>
+              <button type="button" class="btn-secondary btn-sm" @click="m.assign"><Icon.ClipboardPlus :size="14" aria-hidden />Assign</button>
+            </div>
+          </div>
+          <ul data-if="m.tasks.length" class="admin-teams__tasks">
+            <li data-for="t in m.tasks" :key="t.id" class="admin-teams__task">
+              <button type="button" @click="() => openReport(t.id)" class="chip admin-teams__task-chip">
+                <span class="admin-teams__task-id">{{ t.id }}</span>
+                <span class="admin-teams__task-title">{{ t.title }}</span>
+                <StatusBadge :status="t.status" />
+              </button>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <AssignToPersonModal data-if="assignFor" :person="assignFor" :onClose="closeAssign" />
+    <ReportDrawer data-if="openId" :reportId="openId" :onClose="closeDrawer" />
+  </div>
+</template>

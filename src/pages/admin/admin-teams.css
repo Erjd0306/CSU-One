@@ -1,0 +1,46 @@
+/* Admin Teams */
+.admin-teams { @apply space-y-6; }
+.admin-teams__count { @apply text-xs text-slate-500; }
+.admin-teams__list { @apply divide-y; }
+.admin-teams__focus { @apply mt-0.5 text-xs text-slate-500; }
+.admin-teams__empty { @apply px-4 py-4 text-sm text-slate-500; }
+
+.admin-teams__unassigned { @apply grid grid-cols-1 gap-3 px-4 py-3 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-center; }
+.admin-teams__report { @apply min-w-0 rounded-sm text-left; }
+.admin-teams__report-title-row { @apply flex flex-wrap items-center gap-2; }
+.admin-teams__report-title { @apply text-sm font-medium text-slate-900 hover:text-brand-700; }
+.admin-teams__report-meta { @apply mt-0.5 block text-xs text-slate-500; }
+
+.admin-teams__person { @apply px-4 py-4; }
+.admin-teams__person-row { @apply flex flex-col gap-3 md:flex-row md:items-center; }
+.admin-teams__identity { @apply flex min-w-0 flex-1 items-center gap-3; }
+.admin-teams__identity-text { @apply min-w-0; }
+.admin-teams__name { @apply text-sm font-medium text-slate-900; }
+.admin-teams__position { @apply flex flex-wrap items-center gap-x-2 text-xs text-slate-500; }
+.admin-teams__phone { @apply inline-flex items-center gap-1 rounded-sm hover:text-slate-800; }
+
+.admin-teams__controls { @apply grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 md:w-[28rem] md:grid-cols-[9.5rem_minmax(0,1fr)_auto]; }
+.admin-teams__workload { @apply hidden md:block; }
+.admin-teams__workload-row { @apply flex justify-between text-xs text-slate-500; }
+.admin-teams__workload-count { @apply tabular-nums; }
+.admin-teams__bar { @apply mt-1 h-1.5 rounded-r bg-slate-100; }
+.admin-teams__bar-fill { @apply h-full rounded-r bg-navy-700; }
+.admin-teams__bar-fill.is-overloaded { @apply bg-rose-600; }
+
+.admin-teams__tasks { @apply mt-3 flex flex-wrap gap-2 md:pl-12; }
+.admin-teams__task { @apply min-w-0 max-w-full; }
+.admin-teams__task-chip { @apply h-auto min-h-9 max-w-full py-1.5 text-left; }
+.admin-teams__task-id { @apply shrink-0 font-medium text-slate-700; }
+.admin-teams__task-title { @apply min-w-0 truncate sm:max-w-[12rem]; }
+
+/* Assign-to-person modal */
+.teams-assign__footer { @apply flex flex-col-reverse gap-2 sm:flex-row sm:justify-end; }
+.teams-assign__legend { @apply mb-2 text-sm text-slate-600; }
+.teams-assign__list { @apply divide-y rounded-lg border; }
+.teams-assign__option { @apply flex cursor-pointer items-start gap-3 px-3 py-3 hover:bg-slate-50; }
+.teams-assign__option.is-selected { @apply bg-brand-50; }
+.teams-assign__radio { @apply mt-1 h-4 w-4 accent-brand-700; }
+.teams-assign__text { @apply min-w-0 flex-1; }
+.teams-assign__title-row { @apply flex flex-wrap items-center gap-2; }
+.teams-assign__title { @apply text-sm font-medium text-slate-900; }
+.teams-assign__meta { @apply mt-0.5 block text-xs text-slate-500; }

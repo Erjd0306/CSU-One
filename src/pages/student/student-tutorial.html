@@ -1,0 +1,28 @@
+<!-- Student tutorial: a short, skippable walkthrough shown on Student Home after a student's first login. -->
+<template data-component="StudentTutorialView" data-from="./StudentHome" data-props="step steps index next back skip">
+  <Modal :title="step.title" :description="step.text" :onClose="skip" variant="alert" layout="compact">
+    <div class="tutorial">
+      <div class="tutorial__cue">
+        <span class="tutorial__cue-icon"><step.icon :size="20" aria-hidden /></span>
+        <span class="tutorial__cue-text">{{ step.cue }}</span>
+      </div>
+      <div class="tutorial__progress">
+        <ol class="tutorial__dots" aria-hidden>
+          <li data-for="(s, i) in steps" :key="s.title" class="tutorial__dot" :class="i === index ? 'is-current' : ''"></li>
+        </ol>
+        <p class="tutorial__count">Step {{ index + 1 }} of {{ steps.length }}</p>
+      </div>
+    </div>
+
+    <template data-slot="footer">
+      <div class="tutorial__footer">
+        <button data-if="index < steps.length - 1" type="button" class="btn-ghost tutorial__skip" @click="skip">Skip</button>
+        <span data-else></span>
+        <div class="tutorial__nav">
+          <button data-if="index > 0" type="button" class="btn-secondary" @click="back">Back</button>
+          <button type="button" class="btn-primary" @click="next">{{ index === steps.length - 1 ? 'Got it' : 'Next' }}</button>
+        </div>
+      </div>
+    </template>
+  </Modal>
+</template>
